@@ -1,0 +1,11 @@
+header .navbar .row {
+    background: #1A56AC;
+    color: #fff;
+}
+header .active {
+    background-color: #ED5A2F;
+}
+header .navbar-brand {
+    left: 0;
+    bottom: 20px;
+}
