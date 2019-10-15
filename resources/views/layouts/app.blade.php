@@ -13,7 +13,7 @@
     @stack('styles')
     <!-- </Styles> -->
 </head>
-<body class="font-montserrat">
+<body>
     <div class="modal fade" id="modalCombinacion" tabindex="-1" role="dialog" aria-labelledby="modalCombinacion" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

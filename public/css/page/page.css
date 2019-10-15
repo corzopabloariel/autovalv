@@ -25,6 +25,8 @@
 .cotizacion span {
     color: #F4811F;
     font-size: 28px;
+    margin-left: 5px;
+    line-height: 24px;
 }
 .buscador {
     background: #0269cb; /* Old browsers */
@@ -69,4 +71,84 @@ div.title {
 }
 .wrapper-contacto form {
     background-color: #EEEEEE;
+}
+.wrapper-contacto .btn.btn-danger {
+    background: #ED5A2F;
+    border-color: #ED5A2F;
+    font-size: 18px;
+    font-weight: 600;
+}
+.wrapper-contacto .info {
+    font-size: 16px;
+    line-height: 20px;
+    color: #646464;
+}
+.wrapper-contacto .info .icono {
+    color: #ED5A2F;
+    width: 37px;
+    font-size: 27px;
+}
+.wrapper-contacto .info h4 {
+    color: #ED5A2F;
+    font-size: inherit;
+    font-weight: 600;
+}
+.wrapper-contacto .info .icono.fa-whatsapp {
+    color: #4DC95C;
+}
+.wrapper-contacto .form-check-input {
+    margin-top: 0.1rem;
+}
+.wrapper-contacto .terminos {
+    color: #999999;
+    font-size: 14px;
+}
+/** */
+.wrapper-productos .producto .card-text {
+    color: #1A56AC;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 18px;
+    text-align: center;
+}
+.wrapper-productos .sidebar li {
+    background-color: #1A56AC;
+    color: #fff;
+    font-size: 14px;
+}
+.wrapper-productos .sidebar ul ul li {
+    background-color: #ECECEC;
+    color: #1A56AC;
+    font-size: 16px;
+    font-weight: 500;
+}
+.wrapper-productos .sidebar ul ul li i {
+    color: #ED5A2F;
+}
+.wrapper-productos .producto {
+    color: #1A56AC;
+}
+
+.producto-final {
+    color: #595959;
+    font-size: 16px
+}
+.producto-final .btn- {
+    background-color: #ED5A2F;
+    border-color: #ED5A2F;
+}
+.details {
+    font-size: 15px;
+}
+.details .key {
+    color: #EC592E;
+    font-weight: 500;
+}
+.details .title {
+    background-color: #1453AF;
+    color: #fff;
+}
+.info .title- {
+    color: #EB592D;
+    font-size: 16px;
 }

@@ -6,8 +6,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Imagen;
+
 class AdmController extends Controller
 {
+    public $model;
+    public function __construct() {
+        $this->model = new Imagen;
+    }
     public function index() {
         $data = [
             "title" => "Administración",
@@ -23,6 +29,43 @@ class AdmController extends Controller
     	return redirect()->to('/adm');
     }
 
+    public function imagen( Request $request ) {
+        set_time_limit(0);
+        $dataRequest = $request->all();
+        if( empty( $dataRequest ) ) {
+            $data = [
+                "view"      => "auth.parts.empresa.imagen",
+                "title"     => "Imágenes",
+                "imagenes"  => Imagen::get()
+            ];
+            return view('auth.distribuidor',compact('data'));
+        }
+    }
+    public function imagenStore(Request $request, $data = null) {
+        //try {
+            $OBJ = self::object( $request , $data );
+            //dd( $OBJ );
+            if(is_null($data)) {
+                $this->model::create($OBJ);
+                echo 1;
+            } else {
+                $this->model->fill($OBJ);
+                $this->model->save();
+                echo 1;
+            }
+        /*} catch (\Throwable $th) {
+            return 0;
+        }*/
+    }
+    public function imagenDestroy( Request $request )
+    {
+        //try {
+            self::delete( $this->model->find( $request->all()[ "id" ] ) , $this->model->getFillable() );
+            return 1;
+        /*} catch (\Throwable $th) {
+            return 0;
+        }*/
+    }
     public function delete( $data , $fillable ) {
         if( in_array( "elim" , $fillable ) ) {
             $data->fill( [ "elim" => 1 ] );
@@ -30,14 +73,21 @@ class AdmController extends Controller
         } else {
             if( in_array( "image" , $fillable ) ) {
                 if(!empty( $data->image )) {
-                    $filename = public_path() . "/{$data->image}";
+                    $filename = public_path() . "/{$data->image[ 'i' ]}";
+                    if ( file_exists( $filename ) )
+                        unlink( $filename );
+                }
+            }
+            if( in_array( "file" , $fillable ) ) {
+                if(!empty( $data->file )) {
+                    $filename = public_path() . "/{$data->file[ 'i' ]}";
                     if ( file_exists( $filename ) )
                         unlink( $filename );
                 }
             }
             if( in_array( "photo" , $fillable ) ) {
                 if(!empty( $data->photo )) {
-                    $filename = public_path() . "/{$data->photo}";
+                    $filename = public_path() . "/{$data->photo[ 'i' ]}";
                     if ( file_exists( $filename ) )
                         unlink( $filename );
                 }
@@ -47,11 +97,11 @@ class AdmController extends Controller
     }
     /**
      * Función encargada de construir los objetos a guardar
-     * @version 1.0.2
+     * @version 1.0.6
      * @param @type object request $request
      * @param @type object $data
      * @param @type array $merge
-     * @date 10/04/2019
+     * @date 10/10/2019
      */
     public function object( $request , $data = null , $merge = null ) {
         $datosRequest = $request->all();
@@ -92,175 +142,230 @@ class AdmController extends Controller
                         if( isset( $aux[ "NAME" ] ) )
                             $var .= "_{$aux[ "NAME" ]}";
                         
-                        if( isset( $aux[ "DATA" ][ "idiomas" ][ $nombre ] ) ) {
-                            $E_aux = [];
-                            $auxVar = null;
-                            for( $y = 0 ; $y < count( $aux[ "DATA" ][ "idiomas" ][ $nombre ] ) ; $y++ ) {
-                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = null;
-                                if( empty( $auxVar ) )
-                                    $auxVar = $var;
-                                else
-                                    $var = $auxVar;
-                                $var .= "_{$aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ]}";
-                                if( isset( $datosRequest[ $var ])) {
-                                    if( $tipo == "TP_CHECK" ) {
-                                        if( !empty( $datosRequest[ "{$var}_input" ] ) )
-                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $datosRequest[ $var ];
-                                    } else if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE") {
-                                        $path = $tipo == "TP_FILE" ? "files/" : "images/";
-                                        //dd($nombre);
-                                        $path .= "{$aux[ "DATA" ][ "detalles" ][ $nombre ][ "FOLDER" ]}";
-
-                                        $path .= "/{$aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ]}";
-                                        if ( !file_exists( $path ) )
-                                            mkdir( $path , 0777 , true );
-                                        
-                                        $file = $request->file( $var );
-                                        if( !is_null( $file ) ) {
-                                            $fileName = null;
-                                            if( !empty( $data ) ) {
-                                                if( isset( $aux[ "COLUMN" ] ) && isset( $aux[ "NAME" ] ) ) {
-                                                    if( isset( $data[ $aux[ "COLUMN" ] ] ) && isset( $data[ $aux[ "NAME" ] ] ) )
-                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ][ $data[ $aux[ "NAME" ] ] ];
-                                                    else
-                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
-                                                } else if( isset( $aux[ "COLUMN" ] ) ) {
-                                                    if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
-                                                        if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
-                                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ];
-                                                    } else
-                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
-                                                } else {
-                                                    if( isset( $data[ $nombre ] ) )
-                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                        if( isset( $aux[ "DATA" ][ "idiomas" ] ) ) {
+                            if( isset( $aux[ "DATA" ][ "idiomas" ][ $nombre ] ) ) {
+                                $E_aux = [];
+                                $auxVar = null;
+                                for( $y = 0 ; $y < count( $aux[ "DATA" ][ "idiomas" ][ $nombre ] ) ; $y++ ) {
+                                    $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = null;
+                                    if( empty( $auxVar ) )
+                                        $auxVar = $var;
+                                    else
+                                        $var = $auxVar;
+                                    $var .= "_{$aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ]}";
+                                    if( isset( $datosRequest[ $var ])) {
+                                        if( $tipo == "TP_CHECK" ) {
+                                            if( !empty( $datosRequest[ "{$var}_input" ] ) )
+                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $datosRequest[ $var ];
+                                        } else if( $tipo == "TP_BLOB") {
+                                            $path = $tipo == "TP_FILE" ? "files/" : "images/";
+                                            $path .= "{$aux[ "DATA" ][ "detalles" ][ $nombre ][ "FOLDER" ]}";
+    
+                                            $path .= "/{$aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ]}";
+                                            if ( !file_exists( $path ) )
+                                                mkdir( $path , 0777 , true );
+                                            
+                                            $file = $request->file( $var );
+                                            if( !is_null( $file ) ) {
+                                                $imgData = base64_encode(file_get_contents($file));
+                                    
+                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $imgData;
+                                                $OBJ["mime"] = image_type_to_mime_type(exif_imagetype($file));
+                                            }
+                                        } else if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE") {
+                                            $path = $tipo == "TP_FILE" ? "files/" : "images/";
+                                            //dd($nombre);
+                                            $path .= "{$aux[ "DATA" ][ "detalles" ][ $nombre ][ "FOLDER" ]}";
+    
+                                            $path .= "/{$aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ]}";
+                                            if ( !file_exists( $path ) )
+                                                mkdir( $path , 0777 , true );
+                                            
+                                            $file = $request->file( $var );
+                                            if( !is_null( $file ) ) {
+                                                $fileName = null;
+                                                if( !empty( $data ) ) {
+                                                    if( isset( $aux[ "COLUMN" ] ) && isset( $aux[ "NAME" ] ) ) {
+                                                        if( isset( $data[ $aux[ "COLUMN" ] ] ) && isset( $data[ $aux[ "NAME" ] ] ) )
+                                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ][ $data[ $aux[ "NAME" ] ] ];
+                                                        else
+                                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                                                    } else if( isset( $aux[ "COLUMN" ] ) ) {
+                                                        if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
+                                                            if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
+                                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ];
+                                                        } else
+                                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                                                    } else {
+                                                        if( isset( $data[ $nombre ] ) )
+                                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                                                    }
+                                                    if( isset( $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ][ "n" ] ) )
+                                                        $fileName = $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ][ "n" ];
                                                 }
-                                                if( isset( $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ][ "n" ] ) )
-                                                    $fileName = $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ][ "n" ];
+                                                if( empty( $fileName ) )
+                                                    $fileName = $tipo == "TP_FILE" ? $file->getClientOriginalName() : time() . "_{$nombre}";
+                                                $ext = $file->getClientOriginalExtension();
+                                                if( strpos( $fileName , "." ) ) {
+                                                    list( $nnn , $ext ) = explode( "." , $fileName );
+                                                    $fileName = $nnn;
+                                                }
+                                                $file->move( $path , "{$fileName}.{$ext}" );
+                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = [
+                                                    "i" => "{$path}/{$fileName}.{$ext}",
+                                                    "e" => $ext,
+                                                    "n" => $fileName,
+                                                    "d" => $tipo == "TP_FILE" ? null : getimagesize( "{$path}/{$fileName}.{$ext}" )
+                                                ];
                                             }
-                                            if( empty( $fileName ) )
-                                                $fileName = $tipo == "TP_FILE" ? $file->getClientOriginalName() : time() . "_{$nombre}";
-                                            $ext = $file->getClientOriginalExtension();
-                                            if( strpos( $fileName , "." ) ) {
-                                                list( $nnn , $ext ) = explode( "." , $fileName );
-                                                $fileName = $nnn;
+                                        } else {
+                                            if( isset( $datosRequest[ $var ] ) )
+                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $datosRequest[ $var ];
+                                            if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
+                                                if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
+                                                    if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
+                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ] );
+                                                }
                                             }
-                                            $file->move( $path , "{$fileName}.{$ext}" );
-                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = [
-                                                "i" => "{$path}/{$fileName}.{$ext}",
-                                                "e" => $ext,
-                                                "n" => $fileName,
-                                                "d" => $tipo == "TP_FILE" ? null : getimagesize( "{$path}/{$fileName}.{$ext}" )
-                                            ];
                                         }
                                     } else {
-                                        if( isset( $datosRequest[ $var ] ) )
-                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $datosRequest[ $var ];
+                                        if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE" || $tipo == "TP_BLOB" ) {
+                                            if( isset( $aux[ "COLUMN" ] ) ) {
+                                                if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
+                                                    if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
+                                                        $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ];
+                                                } else
+                                                    $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                                            } else
+                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
+                                        }
+            
                                         if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
                                             if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
                                                 if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
-                                                    $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ] );
+                                                    $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ][ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] );
                                             }
                                         }
                                     }
+                                }// END FOR
+                                if( isset( $aux[ "KEY" ] ) ) {
+                                    if( !isset( $OBJ[ $aux[ "KEY" ] ] ) )
+                                        $OBJ[ $aux[ "KEY" ] ] = [];
+                                    
+                                    $OBJ[ $aux[ "KEY" ] ][ $nombre ] = $E_aux;
                                 } else {
-                                    if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE" ) {
-                                        if( isset( $aux[ "COLUMN" ] ) ) {
+                                    if( isset( $aux[ "COLUMN" ] ) && isset( $aux[ "NAME" ] ) ) {
+                                        if( !isset( $OBJ[ $aux[ "COLUMN" ] ][ $aux[ "NAME" ] ] ) )
+                                            $OBJ[ $aux[ "COLUMN" ] ][ $aux[ "NAME" ] ] = [];
+                                        $OBJ[ $aux[ "COLUMN" ] ][ $aux[ "NAME" ] ][ $nombre ] = $E_aux;
+                                    } else if( isset( $aux[ "COLUMN" ] ) ) {
+                                        if( !isset( $OBJ[ $aux[ "COLUMN" ] ] ) )
+                                            $OBJ[ $aux[ "COLUMN" ] ] = [];
+                                        $OBJ[ $aux[ "COLUMN" ] ][ $nombre ] = $E_aux;
+                                    } else
+                                        $OBJ[ $nombre ] = $E_aux;
+                                }
+                                continue;
+                            }
+                        }// END IF
+                        
+                        if( isset( $datosRequest[ $var ])) {
+                            if( $tipo == "TP_CHECK" ) {
+                                if( !empty( $datosRequest[ "{$var}_input" ] ) )
+                                    $E_aux = $datosRequest[ $var ];
+                            } else if( $tipo == "TP_BLOB") {
+                                $file = $request->file( $var );
+                                if( !is_null( $file ) ) {
+                                    $imgData = base64_encode(file_get_contents($file));
+                        
+                                    $E_aux = $imgData;
+                                    $OBJ["mime"] = image_type_to_mime_type(exif_imagetype($file));
+                                }
+                            } else if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE") {
+                                
+                                $path = $tipo == "TP_FILE" ? "files/" : "images/";
+                                $path .= "{$aux[ "DATA" ][ "detalles" ][ $nombre ][ "FOLDER" ]}";
+                                if ( !file_exists( $path ) )
+                                    mkdir( $path , 0777 , true );
+                                
+                                $file = $request->file( $var );
+                                if( !is_null( $file ) ) {
+                                    $fileName = null;
+                                    if( !empty( $data ) ) {
+                                        if( isset( $aux[ "COLUMN" ] ) && isset( $aux[ "NAME" ] ) ) {
+                                            if( isset( $data[ $aux[ "COLUMN" ] ] ) && isset( $data[ $aux[ "NAME" ] ] ) )
+                                                $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ][ $data[ $aux[ "NAME" ] ] ];
+                                            else
+                                                $E_aux = $data[ $nombre ];
+                                        } else if( isset( $aux[ "COLUMN" ] ) ) {
                                             if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
                                                 if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
-                                                    $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $aux[ "COLUMN" ] ][ $nombre ];
+                                                    $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ];
                                             } else
-                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
-                                        } else
-                                            $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = $data[ $nombre ];
-                                    }
-        
-                                    if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
-                                        if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
-                                            if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
-                                                $E_aux[ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ][ $aux[ "DATA" ][ "idiomas" ][ $nombre ][ $y ] ] );
+                                                $E_aux = $data[ $nombre ];
+                                        } else {
+                                            if( isset( $data[ $nombre ] ) )
+                                                $E_aux = $data[ $nombre ];
                                         }
+                                        if( isset( $E_aux[ "n" ] ) )
+                                            $fileName = $E_aux[ "n" ];
                                     }
-                                }
-                            }// END FOR
-                        } else {// END IF
-                            if( isset( $datosRequest[ $var ])) {
-                                if( $tipo == "TP_CHECK" ) {
-                                    if( !empty( $datosRequest[ "{$var}_input" ] ) )
-                                        $E_aux = $datosRequest[ $var ];
-                                } else if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE") {
-                                    
-                                    $path = $tipo == "TP_FILE" ? "files/" : "images/";
-                                    $path .= "{$aux[ "DATA" ][ "detalles" ][ $nombre ][ "FOLDER" ]}";
-                                    if ( !file_exists( $path ) )
-                                        mkdir( $path , 0777 , true );
-                                    
-                                    $file = $request->file( $var );
-                                    if( !is_null( $file ) ) {
-                                        $fileName = null;
-                                        if( !empty( $data ) ) {
-                                            if( isset( $aux[ "COLUMN" ] ) && isset( $aux[ "NAME" ] ) ) {
-                                                if( isset( $data[ $aux[ "COLUMN" ] ] ) && isset( $data[ $aux[ "NAME" ] ] ) )
-                                                    $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ][ $data[ $aux[ "NAME" ] ] ];
-                                                else
-                                                    $E_aux = $data[ $nombre ];
-                                            } else if( isset( $aux[ "COLUMN" ] ) ) {
-                                                if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
-                                                    if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
-                                                        $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ];
-                                                } else
-                                                    $E_aux = $data[ $nombre ];
-                                            } else {
-                                                if( isset( $data[ $nombre ] ) )
-                                                    $E_aux = $data[ $nombre ];
-                                            }
-                                            if( isset( $E_aux[ "n" ] ) )
-                                                $fileName = $E_aux[ "n" ];
-                                        }
-                                        if( empty( $fileName ) )
-                                            $fileName = $tipo == "TP_FILE" ? $file->getClientOriginalName() : time() . "_{$nombre}";
-                                        $ext = $file->getClientOriginalExtension();
-                                        if( strpos( $fileName , "." ) ) {
-                                            list( $nnn , $ext ) = explode( "." , $fileName );
-                                            $fileName = $nnn;
-                                        }
-                                        $file->move( $path , "{$fileName}.{$ext}" );
-                                        $E_aux = [
-                                            "i" => "{$path}/{$fileName}.{$ext}",
-                                            "e" => $ext,
-                                            "n" => $fileName,
-                                            "d" => $tipo == "TP_FILE" ? null : getimagesize( "{$path}/{$fileName}.{$ext}" )
-                                        ];
+                                    if( empty( $fileName ) )
+                                        $fileName = $tipo == "TP_FILE" ? $file->getClientOriginalName() : time() . "_{$nombre}";
+                                    $ext = $file->getClientOriginalExtension();
+                                    if( strpos( $fileName , "." ) ) {
+                                        list( $nnn , $ext ) = explode( "." , $fileName );
+                                        $fileName = $nnn;
                                     }
-                                } else {
-                                    if( isset( $datosRequest[ $var ] ) )
-                                        $E_aux = $datosRequest[ $var ];
-                                    if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
-                                        if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
-                                            if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
-                                                $E_aux = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ] );
-                                        }
-                                    }
+                                    $file->move( $path , "{$fileName}.{$ext}" );
+                                    $E_aux = [
+                                        "i" => "{$path}/{$fileName}.{$ext}",
+                                        "e" => $ext,
+                                        "n" => $fileName,
+                                        "d" => $tipo == "TP_FILE" ? null : getimagesize( "{$path}/{$fileName}.{$ext}" )
+                                    ];
                                 }
                             } else {
-                                if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE" ) {
-                                    if( isset( $aux[ "COLUMN" ] ) ) {
-                                        if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
-                                            if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
-                                                $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ];
-                                        } else
-                                            $E_aux = $data[ $nombre ];
-                                    } else
-                                        $E_aux = $data[ $nombre ];
-                                }
-    
+                                if( isset( $datosRequest[ $var ] ) )
+                                    $E_aux = $datosRequest[ $var ];
+
                                 if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
                                     if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
                                         if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
                                             $E_aux = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ] );
                                     }
+                                    if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "PASSWORD" ] ) ) {
+                                        if( !empty( $datosRequest[ $var ] ) )
+                                            $E_aux = Hash::make($datosRequest[ $var ]);
+                                    }
+                                }
+                            }
+                        } else {
+                            if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE" || $tipo == "TP_BLOB" ) {
+                                if( isset( $aux[ "COLUMN" ] ) ) {
+                                    if( isset( $data[ $aux[ "COLUMN" ] ] ) ) {
+                                        if( isset( $data[ $aux[ "COLUMN" ] ][ $nombre ] ) )
+                                            $E_aux = $data[ $aux[ "COLUMN" ] ][ $nombre ];
+                                    } else
+                                        $E_aux = $data[ $nombre ];
+                                } else
+                                    $E_aux = $data[ $nombre ];
+                            }
+                            //dd($E_aux);
+                            if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ] ) ) {
+                                if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) ) {
+                                    if( !empty( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ) )
+                                        $E_aux = str_slug( $OBJ[ $aux[ "DATA" ][ "detalles" ][ $nombre ][ "CAST" ] ] );
+                                }
+                                if( isset( $aux[ "DATA" ][ "detalles" ][ $nombre ][ "PASSWORD" ] ) ) {
+                                    if( !empty( $datosRequest[ $var ] ) )
+                                        $E_aux = Hash::make($datosRequest[ $var ]);
+                                    else
+                                        $E_aux = $data[ $nombre ];
                                 }
                             }
                         }
+                        
                         if( isset( $aux[ "KEY" ] ) ) {
                             if( !isset( $OBJ[ $aux[ "KEY" ] ] ) )
                                 $OBJ[ $aux[ "KEY" ] ] = [];
@@ -281,11 +386,12 @@ class AdmController extends Controller
                     }
                     break;
                 case "M":
-                    if(isset( $aux["BUCLE"] ) ) {
+                    //if(isset( $aux["BUCLE"] ) ) {
                         //dd($datosRequest);
-                        if( !isset( $datosRequest[ $aux[ "BUCLE" ] ] ) )
-                            continue;
-                        for( $i = 0 ; $i < count( $datosRequest[ $aux[ "BUCLE" ] ] ) ; $i++ ) {
+                        /*if( !isset( $datosRequest[ $aux[ "BUCLE" ] ] ) )
+                            continue 2;*/
+                            //dd($datosRequest);
+                        for( $i = 0 ; $i < count( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_{$aux[ "COLUMN" ]}" ] ) ; $i++ ) {
                             $OBJ_AUX = [];
                             foreach( $aux[ "DATA" ][ "especificacion" ] AS $nombre => $tipo ) {
                                 $E_aux = null;
@@ -469,6 +575,12 @@ class AdmController extends Controller
                                         }
                                     } else {
                                         if( $tipo == "TP_FILE" || $tipo == "TP_IMAGE" ) {
+                                            if( isset( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_removeIcono" ] ) ) {
+                                                if( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_removeIcono" ][ $i ] ) {
+                                                    //$icono = json_decode( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_imageURL" ][ $i ] );
+                                                    continue 2;
+                                                }
+                                            }
                                             $E_aux = null;
                                             //dd($data);
                                             if( !empty( $data ) ) {
@@ -528,7 +640,7 @@ class AdmController extends Controller
                             } else
                                 $OBJ[] = $OBJ_AUX;
                         }
-                    } else {
+                    /*} else {
                         if( !isset( $OBJ_AUX ) )
                             $OBJ_AUX = [];
                         foreach( $aux[ "DATA" ][ "especificacion" ] AS $nombre => $tipo ) {
@@ -542,7 +654,7 @@ class AdmController extends Controller
                                 $OBJ_AUX = $datosRequest[ $var ];
                         }
                         $OBJ[ $aux[ "COLUMN" ] ] = $OBJ_AUX;
-                    }
+                    }*/
                     break;
                 case "A":
                     $OBJ_AUX = null;
@@ -550,12 +662,12 @@ class AdmController extends Controller
                         $var = "{$aux[ "DATA" ][ "name" ]}";
                         if( isset( $aux[ "NAME" ] ) )
                             $var .= "_{$aux[ "NAME" ]}";
-                        $var .= "_{$nombre}";
                         if( isset( $aux[ "COLUMN" ] ) )
                             $var .= "_{$aux[ "COLUMN" ]}";
+                        $var .= "_{$nombre}";
                         //empresa_email_email_suc_rodriguez_email
                         //empresa_email_email_suc_crovara_email
-                        
+                        //dd($var);
                         if( isset( $datosRequest[ $var ] ) )
                             $OBJ_AUX = $datosRequest[ $var ];
                     }

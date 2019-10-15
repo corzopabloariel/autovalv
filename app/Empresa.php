@@ -18,6 +18,7 @@ class Empresa extends Model
         'metadata',
         'form',
         'sections',
+        'schedule',
         'footer'
     ];
     
@@ -30,6 +31,7 @@ class Empresa extends Model
         'metadata' => 'array',
         'form' => 'array',
         'sections' => 'array',
+        'schedule' => 'array',
         'footer' => 'array'
     ];
 }

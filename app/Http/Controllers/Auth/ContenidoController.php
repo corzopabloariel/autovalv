@@ -64,7 +64,7 @@ class ContenidoController extends Controller
                 );
             }
             $OBJ = (new AdmController)->object( $request , $contenido[ "content" ] , [ "comercializacion_text" , "icon_text" ] );
-            //dd($OBJ);
+            dd($datosRequest);
             $contenido->fill( [ "content" => $OBJ] );
             $contenido->save();
             //dd($contenido);

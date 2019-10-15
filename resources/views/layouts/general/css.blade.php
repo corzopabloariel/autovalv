@@ -1,4 +1,6 @@
 <link rel="dns-prefetch" href="//fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,400i,700&display=swap" rel="stylesheet">
+
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700&display=swap" rel="stylesheet">
 

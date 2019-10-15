@@ -25,6 +25,7 @@
     window.pyrusDomicilio = new Pyrus( "empresa_domicilio" );
     window.pyrusTelefono = new Pyrus( "empresa_telefono" );
     window.pyrusEmail = new Pyrus( "empresa_email" );
+    window.pyrusHorario = new Pyrus( "empresa_horario" );
 
     window.pyrusFooter = new Pyrus( "empresa_footer" );
     
@@ -41,6 +42,7 @@
 
                 { DATA: window.pyrusDomicilio.objetoSimple, TIPO: "U", COLUMN: "domicile" },
                 { DATA: window.pyrusFooter.objetoSimple, TIPO: "U", COLUMN: "footer" },
+                { DATA: window.pyrusHorario.objetoSimple, TIPO: "U", COLUMN: "schedule" },
                 { DATA: window.pyrusTelefono.objetoSimple, TIPO: "M", COLUMN: "phone" , TAG : "phone" , KEY : "phone" , BUCLE: `${window.pyrusTelefono.name}_phone_tipo` },
                 { DATA: window.pyrusEmail.objetoSimple, TIPO: "A", COLUMN: "email" }
             ]
@@ -107,6 +109,12 @@
             form += `<legend class="border-bottom">Domicilio</legend>`;
             form += window.pyrusDomicilio.formulario();
         form += `</fieldset>`;
+        
+        form += `<fieldset class="border p-3">`;
+            form += `<legend class="border-bottom">Horarios</legend>`;
+            form += window.pyrusHorario.formulario();
+        form += `</fieldset>`;
+        
         form += '<div class="row justify-content-center pt-3">';
             form += '<div class="col-md-6 col-12">';
                 form += `<button id="btnTelefono" type="button" class="btn btn-block btn-dark text-center text-uppercase" onclick="addTelefono( this )">Teléfono<i class="fas fa-plus ml-2"></i></button>`;
@@ -165,6 +173,7 @@
         $( `#src-${window.pyrusImage.name}_icon` ).attr( "src" , icon );
         $( `#src-${window.pyrusImage.name}_header` ).attr( "src" , header );
 
+        window.pyrusHorario.show( null , `{{ asset('/') }}` , window.datos.schedule );
         window.pyrusDomicilio.show( null , `{{ asset('/') }}` , window.datos.domicile );
         window.pyrusFooter.show( CKEDITOR , `{{ asset('/') }}` , window.datos.footer );
         //window.pyrusHorario.show( null , `{{ asset('/') }}` , window.datos.horarios );

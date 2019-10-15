@@ -8,11 +8,17 @@
 
 @section('content')
 <main class="position-relative d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <small class="position-absolute by-osole">Último cambio: {{ env('APP_DATE') }} | <a style="color:inherit" href="{{ URL::to('/') }}">Página<i class="ml-2 fas fa-external-link-alt"></i></a> | <a target="_blank" href="{{ env('APP_UAUTHOR') }}" style="color:inherit">By {{ env('APP_AUTHOR') }}</a></small>
+    <ol class="breadcrumb bg-white position-absolute by-osole border-0 m-0 rounded-0">
+        <li class="breadcrumb-item" aria-current="page">Último cambio: {{ env('APP_DATE') }}</li>
+        <li class="breadcrumb-item" aria-current="page">V. {{ env('APP_VERSION') }}</li>
+        <li class="breadcrumb-item" aria-current="page"><a style="color:inherit" href="{{ URL::to('/') }}">Página<i class="ml-2 fas fa-external-link-alt"></i></a></li>
+        <li class="breadcrumb-item" aria-current="page"><a target="_blank" href="{{ env('APP_UAUTHOR') }}" style="color:inherit">By {{ env('APP_AUTHOR') }}</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a target="_blank" href="mailto:{{ env('APP_UAMAIL') }}" style="color:inherit">{{ env('APP_UAMAIL') }}</a></li>
+    </ol>
     <div class="container">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5">
+                <div class="card card-signin my-5 shadow">
                     <div class="card-body">
                         <h5 class="card-title text-center">Panel Administrativo<br/><strong>{{ config('app.name') }}</strong></h5>
                         <form class="form-signin" method="POST" action="{{ route('login') }}">
@@ -37,7 +43,7 @@
                                 @endif
                             </div>
 
-                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Acceso</button>
+                            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Acceso<i class="fas fa-sign-in-alt ml-2"></i></button>
                         </form>
                     </div>
                 </div>

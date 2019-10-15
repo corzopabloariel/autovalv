@@ -46,11 +46,11 @@ define( "MENU" ,
             [
                 "nombre"    => "Familias",
                 "icono"     => "<i class='nav-icon fas fa-file-contract'></i>",
-                "url"       => null,//route('familias.index'),
+                "url"       => route('familias.index'),
             ],[
-                "nombre"    => "Marcas",
-                "icono"     => '<i class="fas fa-car-alt"></i>',
-                "url"       => null,//route('marcas.index')
+                "nombre"    => "Producto",
+                "icono"     => '<i class="fas fa-project-diagram"></i>',
+                "url"       => route('productos.index')
             ]
         ],
         //"ok"        => 1
@@ -69,37 +69,5 @@ define( "MENU" ,
         "url"       => route( 'contenido.edit' , [ 'seccion' => 'cotizacion' ] ),
         "ok"        => 1
     ],
-    [
-        "separar"   => 1
-    ],
-    [
-        "id"        => "carrito",
-        "nombre"    => "Carrito",
-        "icono"     => '<i class="fas fa-shopping-cart"></i>',
-        "submenu"   => [
-            [
-                "nombre"    => "Forma de pago",
-                "icono"     => '<i class="fas fa-wallet"></i>',
-                "url"       => null,//route('pagos.index'),
-            ],[
-                "nombre"    => "Envíos",
-                "icono"     => '<i class="fas fa-dolly"></i>',
-                "url"       => null,//route('envios.index')
-            ]
-        ],
-        "ok"        => 1
-    ],
-    /*[
-        "id"        => "pallets",
-        "nombre"    => "Paletizado",
-        "icono"     => '<i class="fas fa-wallet"></i>',
-        "url"       => null
-    ],
-    [
-        "id"        => "mp",
-        "nombre"    => "Credenciales MP",
-        "icono"     => '<i class="fas fa-digital-tachograph"></i>',
-        "url"       => null
-    ]*/
 ]
 );

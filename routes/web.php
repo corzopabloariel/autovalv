@@ -12,14 +12,20 @@
 */
 
 Route::get( '{link?}' ,
-    [ 'uses' => 'page\GeneralController@index' , 'as' => 'index' ]
+    [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
 )->where( 'link' , "index|empresa|productos|documentacion|dimensionamiento|contacto|cotizacion" );
+Route::get('productos/{url}/{id}', [ 'uses' => 'Page\GeneralController@familia', 'as' => 'familia' ]);
+Route::get('productos/{url}/{url2}/{id}', [ 'uses' => 'Page\GeneralController@producto', 'as' => 'producto' ]);
 
 Auth::routes();
 
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::get('/', 'Auth\AdmController@index')->name('adm');
     Route::get('logout', ['uses' => 'Auth\LoginController@logout' , 'as' => 'adm.logout']);
+    
+    Route::get('empresa/imagen', ['uses' => 'Auth\AdmController@imagen', 'as' => 'imagen']);
+    Route::delete('imagen/delete', ['uses' => 'Auth\AdmController@imagenDestroy', 'as' => 'imagen.delete']);
+    Route::post('imagen', ['uses' => 'Auth\AdmController@imagenStore', 'as' => 'imagen.create']);
     
     /**
      * SLIDERS
@@ -40,37 +46,43 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     Route::resource('documentacion', 'Auth\DocumentacionController')->except(['update']);
     Route::post('documentacion/update/{id}', ['uses' => 'Auth\DocumentacionController@update', 'as' => 'documentacion.update']);
     /**
-     * DATOS
+     * PRODUCTO
      */
-    //Route::match( [ 'get' , 'post' ] , 'empresa.usuarios.datos', ['uses' => 'Auth\UserController@datos', 'as' => 'empresa.usuarios.datos']);
+    Route::resource('productos', 'Auth\ProductoController')->except(['update']);
+    Route::post('productos/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'productos.update']);
+    /**
+     * PRODUCTOIMAGE
+     */
+    Route::get('productoimages/{id}',['as' => 'productoimages.index','uses' => 'Auth\ProductoimageController@index' ]);
+    Route::resource('productoimages', 'Auth\ProductoimageController')->except(['update','index']);
+    Route::post('productoimages/update/{id}', ['uses' => 'Auth\ProductoimageController@update', 'as' => 'productoimages.update']);
+    /**
+     * FAMILIA
+     */
+    Route::resource('familias', 'Auth\FamiliaController')->except(['update']);
+    Route::post('familias/update/{id}', ['uses' => 'Auth\FamiliaController@update', 'as' => 'familias.update']);
+    Route::get('familias/{id?}/sub',['as' => 'sfamilias.index','uses' => 'Auth\FamiliaController@index' ]);
+    /**********************************
+            DATOS DE LA EMPRESA        
+     ********************************** /
+    /** USUARIOS */
+    Route::resource('usuarios', 'Auth\UserController')->except(['update']);
+    Route::post('usuarios/update/{id}', ['uses' => 'Auth\UserController@update', 'as' => 'usuarios.update']);
+    Route::get('usuario/datos', ['uses' => 'Auth\UserController@datos', 'as' => 'usuarios.datos']);
+
+    Route::get('empresa/metadatos', ['uses' => 'Auth\MetadatosController@index', 'as' => 'metadatos.index']);
+    Route::post('metadatos/update/{page}', ['uses' => 'Auth\MetadatosController@update', 'as' => 'metadatos.update']);
+
+    //Route::resource('redes', 'Auth\EmpresaController')->except(['index','update']);
+    Route::get('empresa/redes', ['uses' => 'Auth\EmpresaController@redes', 'as' => 'empresa.redes']);
+    Route::post('redes', ['uses' => 'Auth\EmpresaController@redesStore', 'as' => 'empresa.create']);
+    Route::post('redes/update/{id}', ['uses' => 'Auth\EmpresaController@redesUpdate', 'as' => 'redes.update']);
+    Route::delete('redes/delete', ['uses' => 'Auth\EmpresaController@redesDestroy', 'as' => 'redes.delete']);
+
     Route::group(['prefix' => 'empresa', 'as' => 'empresa'], function() {
         Route::get('datos', ['uses' => 'Auth\EmpresaController@datos', 'as' => '.datos']);
         Route::match(['get', 'post'], 'terminos',['as' => '.terminos','uses' => 'Auth\EmpresaController@terminos' ]);
         Route::match(['get', 'post'], 'form',['as' => '.form','uses' => 'Auth\EmpresaController@form' ]);
         Route::post('update', ['uses' => 'Auth\EmpresaController@update', 'as' => '.update']);
-
-        Route::group(['prefix' => 'metadatos', 'as' => '.metadatos'], function() {
-            Route::get('/', ['uses' => 'Auth\MetadatosController@index', 'as' => '.index']);
-            Route::get('edit/{page}', ['uses' => 'Auth\MetadatosController@edit', 'as' => '.edit']);
-            Route::post('update/{page}', ['uses' => 'Auth\MetadatosController@update', 'as' => '.update']);
-            Route::post('store', ['uses' => 'Auth\MetadatosController@store', 'as' => '.store']);
-            Route::get('delete/{page}', ['uses' => 'Auth\MetadatosController@destroy', 'as' => '.destroy']);
-        });
-        
-        Route::group(['prefix' => 'usuarios', 'as' => '.usuarios'], function() {
-            Route::get('/', ['uses' => 'Auth\UserController@index', 'as' => '.index']);
-            Route::get('datos', ['uses' => 'Auth\UserController@datos', 'as' => '.datos']);
-            Route::get('edit/{id}', ['uses' => 'Auth\UserController@edit', 'as' => '.edit']);
-            Route::post('update/{id}', ['uses' => 'Auth\UserController@update', 'as' => '.update']);
-            Route::post('store', ['uses' => 'Auth\UserController@store', 'as' => '.store']);
-            Route::get('delete/{id}', ['uses' => 'Auth\UserController@destroy', 'as' => '.destroy']);
-        });
-        
-        Route::group(['prefix' => 'redes', 'as' => '.redes'], function() {
-            Route::get('/', ['uses' => 'Auth\EmpresaController@redes', 'as' => '.index']);
-            Route::post('update/{id}', ['uses' => 'Auth\EmpresaController@redesUpdate', 'as' => '.update']);
-            Route::post('/', ['uses' => 'Auth\EmpresaController@redesStore', 'as' => '.store']);
-            Route::delete('delete', ['uses' => 'Auth\EmpresaController@redesDestroy', 'as' => '.destroy']);
-        });
     });
 });

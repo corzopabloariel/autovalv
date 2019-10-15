@@ -59,107 +59,19 @@
 <script src="//cdn.ckeditor.com/4.7.3/full/ckeditor.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    window.pyrus = new Pyrus( "slider" , null , src );
+    window.pyrus = new Pyrus("slider", null, src);
     window.section = "{{ $data['seccion'] }}";
     window.elementos = @json($data["sliders"]);
-
-    formSubmit = ( t ) => {
-        let idForm = t.id;
-        let formElement = document.getElementById( idForm );
-
-        let formData = new FormData( formElement );
-        formData.append( "ATRIBUTOS", JSON.stringify(
-            [
-                { DATA: window.pyrus.objetoSimple, TIPO: "U" },
-            ]
-        ));
-        for( let x in CKEDITOR.instances )
-            formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
-        formSave( t , formData );
-    };
-    /** ------------------------------------- */
-    add = ( t , id = 0 , data = null ) => {
-        let btn = $(t);
-        if( btn.is( ":disabled" ) )
-            btn.prop( "disabled" , false );
-        else
-            btn.prop( "disabled" , true );
-        $( "#wrapper-form" ).toggle( 800 , "swing" );
-        $( "#wrapper-tabla" ).toggle( "fast" );
-
-        if( id != 0 ) {
-            action = `{{ url('/adm/${window.pyrus.name}/update/${id}') }}`;
-            method = "PUT";
-        } else {
-            action = `{{ url('/adm/${window.pyrus.name}') }}`;
-            method = "POST";
-        }
-        window.pyrus.show( CKEDITOR , `{{ asset('/') }}` , data );
-        $( `#${window.pyrus.name}_section`).val( window.section );
-        elmnt = document.getElementById("form");
-        elmnt.scrollIntoView();
-        $( "#form" ).prop( "action" , action );
-        $( "#form" ).prop( "method" , method );
-    };
-    /** ------------------------------------- */
-    erase = ( t , id ) => {
-        window.pyrus.delete( t , { title : "ATENCIÓN" , body : "¿Eliminar registro?" } , `{{ url('/adm/${window.pyrus.name}/delete') }}` , id );
-    };
-    /** ------------------------------------- */
-    remove = (t) => {
-        alertify.confirm( "ATENCIÓN" , "¿Cerrar sin guardar registro?",
-            function() {
-                window.pyrus.clean( CKEDITOR );
-                add( $( "#btnADD" ) );
-            },
-            function() {}
-        ).set( 'labels' , { ok : 'Confirmar' , cancel : 'Cancelar' } );
-    };
-    /** ------------------------------------- */
-    edit = ( t , id ) => {
-        $(t).prop( "disabled" , true );
-        window.pyrus.one( `{{ url('/adm/${window.pyrus.name}/${id}/edit') }}`, function( res ) {
-            $( t ).prop( "disabled" , false );
-            add( $("#btnADD") , parseInt( id ) , res.data );
-        } );
-    };
-    clone = function( t, id ) {
-
-    };
-    shortcut.add("Alt+Ctrl+S", function () {
-        if($("#form").is(":visible")) {
-            $("#form").submit();
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
     
-    shortcut.add("Alt+Ctrl+N", function () {
-        if(!$("#form").is(":visible")) {
-            $("#btnADD").click();
-        } else {
-            remove( null );
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
-    /** ------------------------------------- */
-    init = ( callbackOK ) => {
-        window.pyrus.elements( $( "#tabla" ) , `{{ asset('/') }}` , window.elementos );
-        $( "#form .container-form" ).html(window.pyrus.formulario());
-        $( "#wrapper-tabla > div" ).html(window.pyrus.table([ {NAME:"ACCIONES", COLUMN: "acciones", CLASS: "text-center", WIDTH:"150px"} ]));
-        
-        window.pyrus.elements( $( "#tabla" ) , `{{ asset('/') }}` , window.elementos , [ "e" , "d" ] );
-        window.pyrus.editor( CKEDITOR );
-        callbackOK.call(this,null);
-    }
-    /** */
-    init( function() {
-        
-    });
+    /** -------------------------------------
+        Agrega o ejecuta algún evento después de la carga inicial
+     ** ------------------------------------- */
+    addfinish = () => {
+        $( `#${window.pyrus.name}_seccion`).val( window.section );
+    };
+    /** -------------------------------------
+     *      INICIO
+     ** ------------------------------------- */
+    init( () => {} );
 </script>
 @endpush

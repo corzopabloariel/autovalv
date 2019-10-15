@@ -46,16 +46,105 @@ const ENTIDADES = {
         }
     },
     /**
+     * FAMILIAS
+     */
+    familia: {
+        TABLE: "familias",
+        ATRIBUTOS: {
+            order:      {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden",LABEL:1},
+            image:      {TIPO:"TP_IMAGE",FOLDER:"familias",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Archivo - 283px X 283px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"283px"},
+            title:      {TIPO:"TP_STRING",MAXLENGTH: 100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+        },
+        
+        FORM: [
+            {
+                '<div class="col-12 col-md-7">/image/</div><div class="col-12 col-md"><div class="row"><div class="col-12 col-md-5">/order/</div><div class="col-12 mt-3">/title/</div></div></div>':['title','order','image'],
+            },
+        ],
+        FUNCIONES: {
+            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+        }
+    },
+    producto: {
+        TABLE: "productos",
+        ATRIBUTOS: {
+            order:      {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden",LABEL:1},
+            destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Producto destacado?",VALUE:1},
+            familia_id: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Familia",COMUN:1,LABEL:1,ENUMOP:"familias",RELACION:{ E : "familias" , A : "title" },CLASS:"border-left-0 border-right-0 border-top-0" },
+            title:      {TIPO:"TP_STRING",MAXLENGTH: 100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+            file: {TIPO:"TP_FILE",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/jpeg,application/pdf",NOMBRE:"ficha",WIDTH:"190px",SIMPLE:1, LABEL:1},
+            content:    {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"texto"}
+        },
+        
+        FORM: [
+            {
+                '<div class="col-12 col-md">/order/</div><div class="col-12 col-md-6">/title/</div><div class="col-12 col-md-4">/familia_id/</div>':['title','order','familia_id'],
+            },
+            {
+                '<div class="col-12 col-md-6">/file/</div><div class="col-12 col-md-6">/destacado/</div>' : [ 'file' , 'destacado' ]
+            },
+            {
+                '<div class="col-12">/content/</div>' : [ 'content' ]
+            }
+        ],
+        EDITOR: {
+            content: {
+                toolbarGroups: [{
+                        "name": "basicstyles",
+                        "groups": ["basicstyles"]
+                    },
+                    { name: 'clipboard', groups: [ 'clipboard', 'undo' ]},
+                    { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
+                    { name: 'links'},
+
+                    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+                    { name: 'links' },
+                    { name: 'colors', groups: [ 'TextColor', 'BGColor' ] },
+                ],
+                removeButtons: 'CreateDiv,Language'
+            }
+        }
+    },
+    producto_images: {
+        TABLE: "productoimages",
+        ATRIBUTOS: {
+            producto_id: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_INVISIBLE" },
+            order:      {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden",LABEL:1},
+            image:      {TIPO:"TP_IMAGE",FOLDER:"familias",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Archivo - 278px X 278px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"278px"},
+        },
+        
+        FORM: [
+            {
+                '/producto_id/<div class="col-12 col-md-7">/image/</div><div class="col-12 col-md">/order/</div>':['order','image','producto_id'],
+            },
+        ],
+        FUNCIONES: {
+            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+        }
+    },
+    producto_detalle: {
+        ATRIBUTOS: {
+            key:  {TIPO:"TP_STRING",MAXLENGTH: 100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+            value:  {TIPO:"TP_STRING",MAXLENGTH: 100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"valor",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-4">/key/</div><div class="col-12 col-md">/value/</div>' : [ 'key' , 'value' ]
+            },
+        ]
+    },
+    /**
      * HOME
      */
     contenido_home: {
         ATRIBUTOS: {
+            lim: {TIPO:"TP_STRING",VISIBILIDAD:"TP_INVISIBLE"},
             icon: {TIPO:"TP_IMAGE",FOLDER:"icons",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Archivo - 54px X 54px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"ícono",WIDTH:"54px"},
             text: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
         },
         FORM: [
             {
-                '<div class="col-12 col-md-4">/icon/</div><div class="col-12 col-md">/text/</div>' : [ 'icon' , 'text' ]
+                '/lim/<div class="col-12 col-md-4">/icon/</div><div class="col-12 col-md">/text/</div>' : [ 'icon' , 'text','lim' ]
             }
         ],
         FUNCIONES: {
@@ -174,12 +263,19 @@ const ENTIDADES = {
     /** DATOS EMPRESA */
     terminos: {
         ATRIBUTOS: {
-            title: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
-            text: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"}
+            title: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+            text: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"},
+            frase: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Frase en formularios",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
         },
         FORM: [
             {
-                '<div class="col-12">/title/</div><div class="col-12 mt-2">/text/</div>' : ['title','text']
+                '<div class="col-12">/title/</div>' : ['title']
+            },
+            {
+                '<div class="col-12">/text/</div>' : ['text']
+            },
+            {
+                '<div class="col-12">/frase/</div>' : ['frase']
             }
         ],
         EDITOR: {
@@ -295,12 +391,13 @@ const ENTIDADES = {
     },
     empresa_horario: {
         ATRIBUTOS: {
-            horario: {TIPO:"TP_STRING",MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",LABEL:1}
+            publico: {TIPO:"TP_STRING",MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",LABEL:1,NOMBRE:"Atención al Público"},
+            mercaderia: {TIPO:"TP_STRING",MAXLENGTH:150,VISIBILIDAD:"TP_VISIBLE",CLASS:"bg-transparent border-top-0 border-left-0 border-right-0 rounded-0",LABEL:1,NOMBRE:"Expedición de Mercadería"}
         },
         FORM: [
             {
-                '<div class="col-12">/horario/</div>' : ['horario']
-            }
+                '<div class="col-12 col-md">/publico/</div><div class="col-12 col-md">/mercaderia/</div>' : ['publico','mercaderia']
+            },
         ]
     },
     empresa_footer: {

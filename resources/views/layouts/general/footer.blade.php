@@ -14,7 +14,6 @@
                     <li class="my-2"><a href="{{ URL::to( '/empresa' ) }}">la empresa</a></li>
                     <li class="my-2"><a href="{{ URL::to( '/productos' ) }}">productos</a></li>
                     <li class="my-2"><a href="{{ URL::to( '/documentacion' ) }}">documentación</a></li>
-                    <li class="my-2"><a href="{{ URL::to( '/dimensionamiento' ) }}">dimensionamiento</a></li>
                     <li class="my-2"><a href="{{ URL::to( '/cotizacion' ) }}">cotización online</a></li>
                     <li class="my-2"><a href="{{ URL::to( '/contacto' ) }}">contacto</a></li>
                 </ul>

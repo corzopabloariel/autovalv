@@ -1,4 +1,12 @@
+:root {
+    --size25: 25px;
+    --wNav: 300px;
+    --hMenu: 59px;
+    --bfafafa: #fafafa;
+}
 body {
+    font-family: 'Quattrocento Sans', sans-serif;
+    font-size: 18px;
     background-color: #eeeeee;
 }
 .app-body {
@@ -10,21 +18,26 @@ body {
     flex-grow: 1;
     overflow-x: hidden;
 }
-
+b, strong {
+    font-weight: 600;
+}
 #btnADD {
     right: 20px;
     bottom: 10px;
     z-index: 11;
-    font-size: 20px;
-    line-height: 20px;
-    width: 40px;
-    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    font-size: var( --size25 );
+    line-height: var( --size25 );
 }
 #btnReload {
     right: 20px;
     top: 80px;
     z-index: 11;
-    font-size: 25px;
+    font-size: var( --size25 );
 }
 .target > .row > div:nth-child(2n + 1) {
     background-color: #fcfcfc;
@@ -46,35 +59,12 @@ body {
 .blue-background-class {
     background-color: #C8EBFB !important;
 }
-
-.breadcrumb {
-    max-height: 48px;
-    padding: 0.65rem 1rem;
-    font-size: 1.1em;
-}
 .isDisabled {
     color: currentColor;
     cursor: not-allowed;
     opacity: 0.5;
     pointer-events: none;
     text-decoration: none;
-}
-/* ---------------------------------------------------
-    TABLE
------------------------------------------------------ */
-.table-fixed {
-    width: 100%;
-}
-.table-fixed tbody {
-    height: 400px;
-    overflow-y: auto;
-    width: 100%;
-}
-.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
-    display: block;
-}
-.table-fixed thead tr th {
-    float: left;
 }
 /* ---------------------------------------------------
     IMAGES / FILE

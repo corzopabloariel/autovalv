@@ -11,7 +11,7 @@
     <header class="app-header navbar bg-white border-bottom position-fixed shadow-sm w-100">
         <div class="d-flex align-items-center w-100">
             <nav class="navbar justify-content-between w-100 navbar-expand-lg navbar-light p-0">
-                <a class="navbar-brand" href="#">ADMIN</a>
+                <a class="navbar-brand" href="{{ route('adm') }}">ADMIN</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -22,12 +22,12 @@
                                 <span><i class="fas fa-user-circle mr-2"></i>{{Auth::user()["name"]}}</span>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuUsuario">
-                                <a class="dropdown-item" href="{{ route('empresa.usuarios.datos') }}"><i class="fas fa-database mr-2"></i>Mis Datos</a>
+                                <a class="dropdown-item" href="{{ route('usuarios.datos') }}"><i class="fas fa-database mr-2"></i>Mis Datos</a>
                                 <a class="dropdown-item" href="{{ route('adm.logout') }}"><i class="fas text-danger fa-power-off mr-2"></i>Salir</a>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('empresa.usuarios.index') }}"><i class="fas fa-user-friends mr-2"></i>Usuarios</a>
+                            <a class="nav-link" href="{{ route('usuarios.index') }}"><i class="fas fa-user-friends mr-2"></i>Usuarios</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-uppercase pr-5" href="#" id="navbarDropdownMenuEmpresa" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,17 +35,18 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuEmpresa">
                                 <a class="dropdown-item" href="{{ route('empresa.datos') }}"><i class="fab fa-centercode mr-2"></i>Datos de la Empresa</a>
+                                <a class="dropdown-item" href="{{ route('imagen') }}"><i class="fas fa-image mr-2"></i>Imágenes sueltas</a>
                                 <a class="dropdown-item" href="{{ route('empresa.form') }}"><i class="fab fa-wpforms mr-2"></i>Email de Formularios</a>
-                                <a class="dropdown-item isDisabled" href="{{ route('empresa.redes.index') }}"><i class='nav-icon fas fa-comment mr-2'></i>Redes Sociales</a>
-                                <a class="dropdown-item" href="{{ route('empresa.metadatos.index') }}"><i class='nav-icon fas fa-bullhorn mr-2'></i>Metadatos</a>
+                                <a class="dropdown-item" href="{{ route('empresa.redes') }}"><i class='nav-icon fas fa-comment mr-2'></i>Redes Sociales</a>
+                                <a class="dropdown-item" href="{{ route('metadatos.index') }}"><i class='nav-icon fas fa-bullhorn mr-2'></i>Metadatos</a>
                                 <a class="dropdown-item" href="{{ route('empresa.terminos') }}"><i class='nav-icon fas fa-clipboard-check mr-2'></i>Términos y condiciones</a>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <button data-toggle="modal" data-target="#modalCombinacion" class="btn btn-link btn-sm" type="button"><i class="fas fa-keyboard"></i></button>
-                    <a href="{{ route('index') }}" target="blank">Sitio <i class="fas fa-external-link-alt"></i></a>
+                    <button data-toggle="tooltip" data-placement="left" title="Ver atajos" data-toggle="modal" data-target="#modalCombinacion" class="btn btn-link btn-sm" type="button"><i class="fas fa-keyboard"></i></button>
+                    <a href="{{ route('index') }}" target="blank">Ir a parte pública<i class="fas ml-2 fa-external-link-alt"></i></a>
                 </div>
             </nav>
     </header>
@@ -58,7 +59,7 @@
         <!-- Page Content -->
         <div id="content">
             <nav aria-label="breadcrumb" id="breadcrumb">
-                <ol class="breadcrumb rounded-0 border-top-0 border-right-0 border-left-0 border-bottom bg-white">
+                <ol class="breadcrumb border-left-0 border-right-0 border-top-0 rounded-0 bg-white">
                     <li class="breadcrumb-item"><a href="{{ route('adm') }}">ADMIN</a></li>
                     @if(!isset($data["breadcrumb"]))
                         <li class="breadcrumb-item active" aria-current="page">{{$data["title"]}}</li>
@@ -67,9 +68,7 @@
                     @endif
                 </ol>
             </nav>
-            <div class="pb-3">
-                @include($data['view'])
-            </div>
+            @include($data['view'])
         </div>
     </div>
 </div>

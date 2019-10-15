@@ -47,7 +47,7 @@
          */
         formData.append("ATRIBUTOS",JSON.stringify(
             [
-                { DATA: window.pyrus.objetoSimple, TIPO: "M", KEY: "icon" , COLUMN: "icon" , TAG : "icon" , BUCLE : `${window.pyrus.name}_icon_text` },
+                { DATA: window.pyrus.objetoSimple, TIPO: "M", KEY: "icon" , COLUMN: "icon" , TAG : "icon" , BUCLE : `${window.pyrus.name}_icon_lim` },
             ]
         ));
 
