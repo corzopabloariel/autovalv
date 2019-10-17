@@ -53,7 +53,7 @@ define( "MENU" ,
                 "url"       => route('productos.index')
             ]
         ],
-        //"ok"        => 1
+        "ok"        => 1
     ],
     [
         "id"        => "documentacion",

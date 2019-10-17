@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 class UserController extends Controller
 {
+    public $model;
+    public function __construct() {
+        $this->model = new User;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,11 +24,15 @@ class UserController extends Controller
             $data = [
                 "view"      => "auth.parts.usuarios.index",
                 "title"     => "Usuarios",
-                "usuarios"   => User::where("id","!=",Auth::user()["id"])->get()
+                "elementos"   => $this->model::where("id","!=",Auth::user()["id"])->get(),
+                "buttons" => [
+                    [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
+                    [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
+                ],
             ];
             return view('auth.distribuidor',compact('data'));
         } else {
-
+            dd( "NO posee autorización" );
         }
     }
     public function datos() {
@@ -45,27 +53,19 @@ class UserController extends Controller
      */
     public function store(Request $request, $data = null)
     {
-        $datosRequest = $request->all();
         //try {
-            $ARR_data = [];
-            $ARR_data["name"] = $datosRequest["usuarios_name"];
-            $ARR_data["username"] = $datosRequest["usuarios_username"];
-            $ARR_data["password"] = null;
-            $ARR_data["is_admin"] = is_null($datosRequest["usuarios_is_admin"]) ? 0 : $datosRequest["usuarios_is_admin"];
-            
+            $OBJ = (new AdmController)->object( $request , $data );
+            //dd($OBJ);
             if(is_null($data)) {
-                $ARR_data["password"] = Hash::make($datosRequest["usuarios_password"]);
-                User::create($ARR_data);
+                $this->model::create($OBJ);
+                echo 1;
             } else {
-                $ARR_data["password"] = $data["password"];
-                if(!empty($datosRequest["usuarios_password"]))
-                    $ARR_data["password"] = Hash::make($datosRequest["usuarios_password"]);
-                $data->fill($ARR_data);
+                $data->fill($OBJ);
                 $data->save();
+                echo 1;
             }
-            return 1;
         /*} catch (\Throwable $th) {
-            return 0;
+            echo 0;
         }*/
     }
 
@@ -77,7 +77,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return User::find($id);
+        return $this->model::find($id);
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $this->model::destroy($id);
         return 1;
     }
 }

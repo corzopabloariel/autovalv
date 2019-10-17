@@ -28,7 +28,7 @@ class MetadatosController extends Controller
         $data = [
             "title"     => "Empresa :: Metadatos",
             "view"      => "auth.parts.empresaMetadatos",
-            "contenido" => $datos
+            "elementos" => $datos
         ];
         return view('auth.distribuidor',compact('data'));
     }

@@ -29,8 +29,6 @@
 
     window.pyrusFooter = new Pyrus( "empresa_footer" );
     
-    window.datos = @JSON( $data[ "contenido" ] )
-    
     formSubmit = ( t ) => {
         let idForm = t.id;
         let formElement = document.getElementById( idForm );
@@ -43,7 +41,7 @@
                 { DATA: window.pyrusDomicilio.objetoSimple, TIPO: "U", COLUMN: "domicile" },
                 { DATA: window.pyrusFooter.objetoSimple, TIPO: "U", COLUMN: "footer" },
                 { DATA: window.pyrusHorario.objetoSimple, TIPO: "U", COLUMN: "schedule" },
-                { DATA: window.pyrusTelefono.objetoSimple, TIPO: "M", COLUMN: "phone" , TAG : "phone" , KEY : "phone" , BUCLE: `${window.pyrusTelefono.name}_phone_tipo` },
+                { DATA: window.pyrusTelefono.objetoSimple, TIPO: "M", COLUMN: "phone" , TAG : "phone" , KEY : "phone" },
                 { DATA: window.pyrusEmail.objetoSimple, TIPO: "A", COLUMN: "email" }
             ]
         ));
@@ -76,7 +74,7 @@
     
         target.append(html);
 
-        window.pyrusTelefono.show( null , `{{ asset('/') }}` , value , window[ `phone` ] , `phone` );
+        window.pyrusTelefono.show( null , url_simple , value , window[ `phone` ] , `phone` );
     };
     
     addEmail = ( t, value = null ) => {
@@ -93,7 +91,7 @@
         html += '</div>';
 
         target.append(html);
-        window.pyrusEmail.show( null , `{{ asset('/') }}` , { email : value } , window[ `email` ] , `email` );
+        window.pyrusEmail.show( null , url_simple , { email : value } , window[ `email` ] , `email` );
     }
     /** ------------------------------------- */
     init = (callbackOK) => {
@@ -141,48 +139,20 @@
 
         window.pyrusFooter.editor( CKEDITOR );
         callbackOK.call( this );
-    }
-    shortcut.add( "Alt+Ctrl+S" , function () {
-        if( $( "#form" ).is (":visible" ) ) {
-            $( "#form" ).submit();
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
+    };
     /** */
     init( function() {
-        date = new Date();
-        logo = logoFooter = favicon = header = icon = "";
-        if( Object.keys( window.datos.images ).length > 0 ) {
-            if(window.datos.images.logo !== undefined)
-                logo = `{{ asset('${window.datos.images.logo.i}') }}?t=${date.getTime()}`;
-            if(window.datos.images.logoFooter !== undefined)
-                logoFooter = `{{ asset('${window.datos.images.logoFooter.i}') }}?t=${date.getTime()}`;
-            if(window.datos.images.favicon !== null)
-                favicon = `{{ asset('${window.datos.images.favicon.i}') }}?t=${date.getTime()}`;
-            if(window.datos.images.icon !== null)
-                icon = `{{ asset('${window.datos.images.icon.i}') }}?t=${date.getTime()}`;
-            if(window.datos.images.header !== null)
-                header = `{{ asset('${window.datos.images.header.i}') }}?t=${date.getTime()}`;
-        }
-        $( `#src-${window.pyrusImage.name}_logo` ).attr( "src" , logo );
-        $( `#src-${window.pyrusImage.name}_logoFooter` ).attr( "src" , logoFooter );
-        $( `#src-${window.pyrusImage.name}_favicon` ).attr( "src" , favicon );
-        $( `#src-${window.pyrusImage.name}_icon` ).attr( "src" , icon );
-        $( `#src-${window.pyrusImage.name}_header` ).attr( "src" , header );
-
-        window.pyrusHorario.show( null , `{{ asset('/') }}` , window.datos.schedule );
-        window.pyrusDomicilio.show( null , `{{ asset('/') }}` , window.datos.domicile );
-        window.pyrusFooter.show( CKEDITOR , `{{ asset('/') }}` , window.datos.footer );
-        //window.pyrusHorario.show( null , `{{ asset('/') }}` , window.datos.horarios );
-        window.datos.email.forEach( function( e ) {
+        window.pyrusImage.show( null , url_simple , window.data.elementos.images );
+        window.pyrusHorario.show( null , url_simple , window.data.elementos.schedule );
+        window.pyrusDomicilio.show( null , url_simple , window.data.elementos.domicile );
+        window.pyrusFooter.show( CKEDITOR , url_simple , window.data.elementos.footer );
+        //window.pyrusHorario.show( null , url_simple , window.data.elementos.horarios );
+        window.data.elementos.email.forEach( function( e ) {
             addEmail( $( "#btnEmail" ) , e );
         });
         
-        if( window.datos.phone !== null ) {
-            window.datos.phone.forEach( function( t ) {
+        if( window.data.elementos.phone !== null ) {
+            window.data.elementos.phone.forEach( function( t ) {
                 addTelefono( $( "#btnTelefono" ) , t );
             });
         }

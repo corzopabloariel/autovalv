@@ -18,8 +18,12 @@ class SliderController extends Controller
         $data = [
             "view"      => "auth.parts.slider",
             "title"     => "Slider: " . strtoupper($seccion),
-            "seccion"   => $seccion,
-            "sliders"   => $sliders
+            "section"   => $seccion,
+            "elementos"   => $sliders,
+            "buttons" => [
+                [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
+                [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
+            ],
         ];
         return view('auth.distribuidor',compact('data'));
     }

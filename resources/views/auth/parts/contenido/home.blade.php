@@ -6,7 +6,7 @@
                     <div class="row">
                         <div class="col-12">
                             <ul class="list-group list-group-horizontal d-flex justify-content-center icon border-0">
-                                @foreach( $data[ "contenido" ]->content[ 'icon' ] AS $c )
+                                @foreach( $data[ "elementos" ]->content[ 'icon' ] AS $c )
                                     <li class="list-group-item d-flex align-items-center flex-column px-5 border-0">
                                         @isset( $c[ 'icon' ][ 'i' ] )
                                         <img src="{{ asset( $c[ 'icon' ][ 'i' ] ) }}" alt="icon" class="mb-2" srcset="">
@@ -34,7 +34,6 @@
 @push('scripts')
 <script src="//cdn.ckeditor.com/4.7.3/full/ckeditor.js"></script>
 <script>
-    window.contenido = @json( $data[ "contenido" ] );
     window.pyrus = new Pyrus( "contenido_home" , null , src );
     
     formSubmit = ( t ) => {
@@ -47,29 +46,21 @@
          */
         formData.append("ATRIBUTOS",JSON.stringify(
             [
-                { DATA: window.pyrus.objetoSimple, TIPO: "M", KEY: "icon" , COLUMN: "icon" , TAG : "icon" , BUCLE : `${window.pyrus.name}_icon_lim` },
+                { DATA: window.pyrus.objetoSimple, TIPO: "M", KEY: "icon" , COLUMN: "icon" , TAG : "icon" },
             ]
         ));
+        formData.append("REMOVE", JSON.stringify( window.imgDelete ) );
 
         for( let x in CKEDITOR.instances )
             formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
         formSave( t , formData );
     };
-    shortcut.add("Alt+Ctrl+S", function () {
-        if($("#form").is(":visible")) {
-            $("#form").submit();
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
     remove_ = ( t , class_ ) => {
         let target =  $( t ).closest( `.${class_}` );
         if( window.imgDelete === undefined )
             window.imgDelete = [];
         if( target.find( ".hidden" ).val() != "" )
-            window.imgDelete.push( target.attr( "src" ) );
+            window.imgDelete.push( JSON.parse( target.find( ".hidden" ).val() ) );
         
         target.remove();
     };
@@ -88,8 +79,10 @@
         html += '</div>';
 
         target.append( html );
-        if( value !== null )
-            target.find( ".icon:last-child() .hidden" ).val( "1" );
+        if( value !== null ) {
+            if( value.icon !== null )
+                target.find( ".icon:last-child() .hidden" ).val( JSON.stringify( value ) );
+        }
         window.pyrus.show( null , `{{ asset('/') }}` , value , window.icon , "icon" );
         window.pyrus.editor( CKEDITOR , window.icon , "icon" );
     };
@@ -111,9 +104,9 @@
     };
     /** */
     init(function() {
-        if( window.contenido.content !== null ) {
-            if( window.contenido.content.icon !== null )
-                window.contenido.content.icon.forEach( function( x ) {
+        if( window.data.elementos.content !== null ) {
+            if( window.data.elementos.content.icon !== null )
+                window.data.elementos.content.icon.forEach( function( x ) {
                     addicon( null , x );
                 });
         }

@@ -1,8 +1,5 @@
 <section class="mt-3">
     <div class="container-fluid">
-        <div class="d-none">
-            <button disabled="true" id="btnADD" onclick="add(this)" class="btn btn-primary text-uppercase" type="button">Agregar<i class="fas fa-plus ml-2"></i></button>
-        </div>
         <div style="display: none;" id="wrapper-form" class="">
             <div class="card">
                 <div class="card-body">
@@ -29,73 +26,32 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     window.pyrus = new Pyrus( "metadatos" );
-    window.metadatos = @json( $data[ "contenido" ][ "metadata" ] );
 
-    formSubmit = ( t ) => {
-        let idForm = t.id;
-        let formElement = document.getElementById( idForm );
-
-        let formData = new FormData( formElement );
-        formData.append( "ATRIBUTOS", JSON.stringify(
-            [
-                { DATA: window.pyrus.objetoSimple, TIPO: "U" }
-            ]
-        ));
-        formSave( t , formData );
-    };
-    /** ------------------------------------- */
-    add = ( t , seccion = "" , data = null ) => {
-        let btn = $(t);
-
-        $("#wrapper-form").toggle(800,"swing");
-
-        $("#wrapper-tabla").toggle("fast");
-
-        if(seccion != "") {
-            method = "put";
-            action = `{{ url('/adm/empresa/${window.pyrus.name}/update/${seccion}') }}`;
-        } else {
-            method = "post";
-            action = `{{ url('/adm/empresa/${window.pyrus.name}/store') }}`;
-        }
-        $("#form button").text(`${seccion.toUpperCase()}`);
-        window.pyrus.show( null , `{{ asset('/') }}` , data );
-        $( `#${window.pyrus.name}_section`).val( seccion );
-        elmnt = document.getElementById("form");
-        elmnt.scrollIntoView();
-        $("#form").attr("action",action);
-        $("#form").attr("method",method);
-    };
-    /** ------------------------------------- */
-    remove = ( t ) => {
-        add($("#btnADD"));
-        window.pyrus.clean( null );
+    /** -------------------------------------
+        Agrega o ejecuta algún evento después de la carga inicial
+     ** ------------------------------------- */
+    addfinish = () => {
+        $( `#${window.pyrus.name}_section`).val( window.data.section );
     };
     /** ------------------------------------- */
     edit = ( t , seccion ) => {
         //$(t).attr("disabled",true);
-        add( $("#btnADD") , seccion , window.metadatos[ seccion ] );
+        window.data.section = seccion;
+        add( $("#btnADD") , seccion , window.data.elementos.metadata[ seccion ] );
     };
-    shortcut.add( "Alt+Ctrl+S" , function () {
-        if( $( "#form" ).is( ":visible" ) )
-            $( "#form" ).submit();
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
-    /** ------------------------------------- */
+    /** -------------------------------------
+     *      INICIO
+     ** ------------------------------------- */
     init = ( callbackOK ) => {
-        console.log("CONSTRUYENDO FORMULARIO Y TABLA");
         /** */
-        $( "#form .container-form" ).html(window.pyrus.formulario());
-        $( "#wrapper-tabla > div" ).html(window.pyrus.table([ {NAME:"ACCIONES", COLUMN: "acciones", CLASS: "text-center", WIDTH:"150px"} ]));
-
-        window.pyrus.elements( $( "#tabla" ) , `{{ asset('/') }}` , window.metadatos , [ "e" ] );
-
-        callbackOK.call(this,null);
-    }
+        $( "#form .container-form" ).html( window.pyrus.formulario() );
+        $( "#wrapper-tabla > div.card-body" ).html( window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] ) );
+        
+        window.pyrus.editor( CKEDITOR );
+        window.pyrus.elements( $( "#tabla" ) , url_simple , window.data.elementos.metadata , [ "e" , "d" ] );
+        callbackOK.call( this , null );
+    };
     /** */
-    init( function() {});
+    init( () => {});
 </script>
 @endpush

@@ -5,16 +5,16 @@ footer {
     background: linear-gradient(to bottom,  #f6f6f6 0%,#f6f6f6 0%,#e6e7e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#e6e7e8',GradientType=0 ); /* IE6-9 */
     font-size: 13px;
-    border-top: 2px solid #ED5A2F;
+    border-top: 2px solid var( --color );
     color: #777777;
 }
 footer .title {
     font-size: 14px;
-    color: #333333;
+    color: var( --gray-dark );
     font-weight: 500;
 }
 footer .icono {
-    color: #EF5923;
+    color: var( --color );
 }
 footer + .osole {
     background-color: #e6e7e8;
@@ -43,7 +43,7 @@ footer .logo {
     width: 263px;
 }
 footer .logo + div {
-    color: #1955AC;
+    color: var( --colorA );
     font-size: 20px;
     font-weight: 300;
 }

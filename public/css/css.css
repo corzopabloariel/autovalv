@@ -55,13 +55,6 @@ dl, ol, ul {
     width: 206px;
     border-bottom: 3px solid #ED5A2F;
 }
-.wrapper-home .buscador {    
-    margin-top: 15px;
-    height: calc( 50% - 7.5px );
-}
-.wrapper-home .cotizacion {
-    height: calc( 50% - 7.5px );
-}
 /**/
 .wrapper-empresa .contenido {
     /* Old Chrome, Safari and Opera */

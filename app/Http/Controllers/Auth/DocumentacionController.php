@@ -14,13 +14,16 @@ class DocumentacionController extends Controller
      */
     public function index()
     {
-        $documentacion = Documentacion::where( 'elim',0 )->orderBy('order')->get();
         $data = [
-            "view"      => "auth.parts.documentacion",
-            "title"     => "Documentaciones",
-            "documentacion"   => $documentacion
+            "view" => "auth.parts.documentacion",
+            "title" => "Documentaciones",
+            "buttons" => [
+                [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
+                [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
+            ],
+            "elementos" => Documentacion::where( 'elim', 0 )->orderBy( 'order' )->get()
         ];
-        return view('auth.distribuidor',compact('data'));
+        return view( 'auth.distribuidor' , compact( 'data' ) );
     }
 
     public function show() {}

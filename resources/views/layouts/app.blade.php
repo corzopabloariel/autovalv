@@ -45,21 +45,27 @@
     <!-- Scripts -->
     @include('layouts.general.script')
     <script>
-        const src = "{{ asset('images/general/no-img.gif') }}";
         window.url = "{{ url()->current() }}";
+        const src = "{{ asset('images/general/no-img.gif') }}";
+        const url_simple = `{{ URL::to('/') }}`;
         @isset( $data )
-        urlAUX = @json($data);
-        if( urlAUX.url !== undefined )
-            window.url = urlAUX.url;
+        window.data = @json($data);
+        if( window.data.url !== undefined )
+            window.url = window.data.url;
         @endisset
-        $(document).ready(function() {
+        $( function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            $("body").on("click",".alert button.close", function() {
+                $(this).closest(".alert").remove();
+            });
+    
             if($("#sidebar").find(`a[href="${window.url}"]`).data("link") == "u") {
                 $("#sidebar").find(`a[href="${window.url}"]`).addClass("active");
                 $("#sidebar").find(`a[href="${window.url}"]`).closest("ul").addClass("show");
                 $("#sidebar").find(`a[href="${window.url}"]`).closest("ul").prev().attr("aria-expanded",true).parent().addClass("active");
             } else
                 $("#sidebar").find(`a[href="${window.url}"]`).parent().addClass("active");
-        });
+        } );
     </script>
     @stack('scripts')
 </body>

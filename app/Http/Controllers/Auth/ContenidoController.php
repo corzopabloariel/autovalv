@@ -41,11 +41,11 @@ class ContenidoController extends Controller
         }
     
         $data = [
-            "view"          => "auth.parts.contenido",
-            "title"         => "Contenido: " . strtoupper( $seccion ),
-            "section"       => $seccion,
-            "contenido"     => $contenido,
-            "empresa"       => Empresa::first()
+            "view" => "auth.parts.contenido",
+            "title" => "Contenido: " . strtoupper( $seccion ),
+            "section" => $seccion,
+            "elementos" => $contenido,
+            "empresa" => Empresa::first()
         ];
         return view( 'auth.distribuidor' , compact( 'data' ) );
     }
@@ -64,7 +64,7 @@ class ContenidoController extends Controller
                 );
             }
             $OBJ = (new AdmController)->object( $request , $contenido[ "content" ] , [ "comercializacion_text" , "icon_text" ] );
-            dd($datosRequest);
+            //dd($OBJ);
             $contenido->fill( [ "content" => $OBJ] );
             $contenido->save();
             //dd($contenido);

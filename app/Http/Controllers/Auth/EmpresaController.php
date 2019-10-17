@@ -8,29 +8,20 @@ use App\Empresa;
 use App\Contenido;
 class EmpresaController extends Controller
 {
+    public $model;
+    public $data;
+    public function __construct() {
+        $this->model = new Empresa;
+        $this->data = $this->model::first();
+    }
+
     public function datos()
     {
-        $datos = Empresa::first();
-
-        if(empty($datos)) {
-            $datos = Empresa::create([
-                "email" => [],
-                "phone" => [],
-                "telefono" => [],
-                "domicile" => [],
-                "social_networks" => [],
-                "images" => [],
-                "metadata" => [],
-                "form" => [],
-                "sections" => []
-            ]);
-        }
-        
         $data = [
             "title" => "Empresa :: Datos generales",
             "view" => "auth.parts.empresa",
             "seccion" => "empresa",
-            "contenido" => $datos
+            "elementos" => $this->data
         ];
         return view('auth.distribuidor',compact('data'));
     }
@@ -38,20 +29,19 @@ class EmpresaController extends Controller
     public function form(Request $request)
     {
         $dataRequest = $request->all();
-        $datos = Empresa::first();
         if(empty($dataRequest)) {
             $data = [
                 "title"     => "Empresa :: Email de formularios",
                 "view"      => "auth.parts.empresaForm",
                 "seccion"   => "form",
-                "contenido" => $datos
+                "elementos" => $this->data
             ];
             return view('auth.distribuidor',compact('data'));
         }
         try {
-            unset($dataRequest["_token"]);
-            $datos->fill(["form" => $dataRequest]);
-            $datos->save();
+            unset( $dataRequest[ "_token" ] );
+            $this->data->fill( [ "form" => $dataRequest ] );
+            $this->data->save();
             return 1;
         } catch (\Throwable $th) {
             return 0;
@@ -60,16 +50,15 @@ class EmpresaController extends Controller
     
     public function update(Request $request)
     {
-        $data = Empresa::first();
         //try {
-            $OBJ = (new AdmController)->object( $request , $data );
+            $OBJ = (new AdmController)->object( $request , $this->data );
             //dd($OBJ);
-            if(is_null($data)) {
-                Empresa::create($OBJ);
+            if( is_null( $this->data ) ) {
+                Empresa::create( $OBJ );
                 echo 1;
             } else {
-                $data->fill($OBJ);
-                $data->save();
+                $this->data->fill( $OBJ );
+                $this->data->save();
                 echo 1;
             }
         /*} catch (\Throwable $th) {
@@ -80,19 +69,17 @@ class EmpresaController extends Controller
      * Redes sociales
      */
     public function redes() {
-        $datos = Empresa::first()["social_networks"];
-
+        $datos = $this->data["social_networks"];
         $data = [
             "title"     => "Empresa :: Redes sociales",
             "view"      => "auth.parts.empresaRedes",
-            "contenido" => $datos
+            "elementos" => $datos
         ];
         return view('auth.distribuidor',compact('data'));
     }
     public function redesStore(Request $request, $id = null) {
-        $datos = Empresa::first();
         try {
-            $redes = $datos[ "social_networks" ];
+            $redes = $this->data->social_networks;
             if( is_null( $id ) )
                 $id = time();
             if( empty( $redes ) )
@@ -105,8 +92,8 @@ class EmpresaController extends Controller
             //dd( $OBJ );
             $redes[ $id ] = $OBJ;
     
-            $datos->fill([ "social_networks" => $redes ] );
-            $datos->save();
+            $this->data->fill([ "social_networks" => $redes ] );
+            $this->data->save();
             return 1;
         } catch (\Throwable $th) {
             return 0;
@@ -115,16 +102,19 @@ class EmpresaController extends Controller
     public function redesDestroy( Request $request )
     {
         try {
-            $datos = Empresa::first();
-            $redes = $datos[ "redes" ];
+            $redes = $this->data->social_networks;
             unset( $redes[ $request->all()[ "id" ] ] );
     
-            $datos->fill( [ "redes" => $redes ] );
-            $datos->save();
+            $this->data->fill( [ "social_networks" => $redes ] );
+            $this->data->save();
             return 1;
         } catch (\Throwable $th) {
             return 0;
         }
+    }
+    public function redesEdit($id)
+    {
+        return $this->data->social_networks[ $id ];
     }
     public function redesUpdate(Request $request, $id) {
         return self::redesStore($request,$id);
@@ -137,7 +127,7 @@ class EmpresaController extends Controller
             "title"     => "Contenido: TÉRMINOS Y CONDICIONES",
             "view"      => "auth.parts.contenido",
             "section"   => "terminos",
-            "contenido" => $contenido
+            "elementos" => $contenido
         ];
         return view('auth.distribuidor',compact('data'));
     }

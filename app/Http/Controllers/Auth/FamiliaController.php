@@ -19,8 +19,12 @@ class FamiliaController extends Controller
             $data = [
                 "view"      => "auth.parts.familia",
                 "title"     => "Familias",
-                "familia"   => $familia,
-                "familia_id" => null
+                "elementos"   => $familia,
+                "familia_id" => null,
+                "buttons" => [
+                    [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
+                    [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
+                ],
             ];
         } else {
             $familia = Familia::find( $id );
@@ -32,9 +36,13 @@ class FamiliaController extends Controller
                 "view"      => "auth.parts.familia",
                 "title"     => "Sub familias",
                 "familia_id" => $id,
-                "familia"   => $familia->familias,
+                "elementos"   => $familia->familias,
                 "breadcrumb" => $breadcrumb,
-                "url"   => $url
+                "url"   => $url,
+                "buttons" => [
+                    [ "i" => "fas fa-pencil-alt" , "b" => "btn-warning" , "t" => "Editar" ],
+                    [ "i" => "fas fa-trash-alt" , "b" => "btn-danger" , "t" => "Eliminar" ]
+                ],
             ];
         }
         return view('auth.distribuidor',compact('data'));

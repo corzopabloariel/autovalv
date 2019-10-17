@@ -202,8 +202,9 @@ const ENTIDADES = {
                     { name: 'clipboard', groups : [ 'clipboard' , 'undo' ] },
                     { name: 'links' },
                     { name: 'colors', groups: [ 'TextColor' , 'BGColor' ] },
+                    { name: 'insert' },
                 ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Mode,Subscript,Superscript'
+                removeButtons: 'CreateDiv,Language,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe'
             },
             text2: {
                 toolbarGroups: [
@@ -212,8 +213,9 @@ const ENTIDADES = {
                     { name: 'clipboard', groups : [ 'clipboard' , 'undo' ] },
                     { name: 'links' },
                     { name: 'colors', groups: [ 'TextColor' , 'BGColor' ] },
+                    { name: 'insert' },
                 ],
-                removeButtons: 'Save,NewPage,Print,Preview,Templates,Mode,Subscript,Superscript'
+                removeButtons: 'CreateDiv,Language,Flash,Table,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe'
             },
             phrase1: {
                 toolbarGroups: [
@@ -242,17 +244,14 @@ const ENTIDADES = {
      */
     documentacion: {
         ATRIBUTOS: {
-            order: {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden"},
+            order: {TIPO:"TP_STRING",MAXLENGTH:3,LABEL:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden"},
             file: {TIPO:"TP_FILE",FOLDER:"documentacion",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/jpeg,application/pdf",NOMBRE:"Archivo"},
-            title: {TIPO:"TP_STRING",MAXLENGTH:100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
+            title: {TIPO:"TP_STRING",MAXLENGTH:100,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0"},
             cover: {TIPO:"TP_IMAGE",FOLDER:"cover",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Archivo - 200px X 180px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"200px"},
         },
         FORM: [
             {
-                '<div class="col-12 col-md-3">/order/</div><div class="col-12 col-md">/title/</div>':['order','title'],
-            },
-            {
-                '<div class="col-12 col-md-5">/cover/</div><div class="col-12 col-md">/file/</div>':['cover','file'],
+                '<div class="col-12 col-md-5">/cover/</div><div class="col-12 col-md"><div class="row"><div class="col-12 col-md-3">/order/</div><div class="col-12 col-md">/title/</div></div><div class="row mt-4"><div class="col-12">/file/</div></div></div>':['cover','file','order','title'],
             },
         ],
         FUNCIONES: {
@@ -306,11 +305,46 @@ const ENTIDADES = {
             }
         ]
     },
+    usuarios: {
+        ATRIBUTOS: {
+            username: {TIPO:"TP_STRING",MAXLENGTH:30,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"usuario",CLASS:"border-left-0 border-top-0 border-right-0"},
+            name: {TIPO:"TP_STRING",MAXLENGTH:100,NECESARIO:1,LABEL:1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"nombre",CLASS:"border-left-0 border-top-0 border-right-0"},
+            password: {TIPO:"TP_PASSWORD",LABEL:1,VISIBILIDAD:"TP_VISIBLE_FORM",NOMBRE:"contraseña",CLASS:"border-left-0 border-top-0 border-right-0",HELP:"<strong>SOLO EN EDITAR</strong> Si no desea cambiar la clave, deje el campo vacío."},
+            is_admin: {TIPO:"TP_ENUM",LABEL:1,VISIBILIDAD:"TP_VISIBLE",ENUM:{1:"Administrador",0:"Usuario"},NOMBRE:"Tipo",CLASS:"text-uppercase border-left-0 border-top-0 border-right-0",COMUN:1, NECESARIO: 1},
+        },
+        NECESARIO: {
+            'username' : { CREATE : 1 , UPDATE : 1 },
+            'name' : { CREATE : 1 , UPDATE : 1 },
+            'is_admin' : { CREATE : 1 , UPDATE : 1 },
+            'password' : { CREATE : 1 }
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-6">/is_admin/</div><div class="col-12 col-md-6">/name/</div>' : ['is_admin','name']
+            },
+            {
+                '<div class="col-12 col-md-6">/username/</div><div class="col-12 col-md-6">/password/</div>' : ['username','password']
+            }
+        ]
+    },
+    imagen: {
+        ATRIBUTOS: {
+            image: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo - (?)px x (?)px",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"250px"},
+        },
+        FORM: [
+            {
+                '<div class="col-12 col-md-8">/image/</div>' : ['image']
+            }
+        ],
+        FUNCIONES: {
+            image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+        },
+    },
     redes: {
         ATRIBUTOS: {
             redes: {TIPO:"TP_ENUM",ENUM:{facebook:'Facebook',instagram:'Instagram',twitter:'Twitter',youtube:'YouTube',linkedin:'LinkedIn',pinterest:'Pinterest'},NECESARIO:1,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase border-left-0 border-right-0 border-top-0",NOMBRE:"red social",COMUN:1},
-            titulo: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0"},
-            url: {TIPO:"TP_LINK",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio",CLASS:"border-left-0 border-right-0 border-top-0"},
+            titulo: {TIPO:"TP_STRING",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0"},
+            url: {TIPO:"TP_LINK",LABEL: 1,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"link del sitio",CLASS:"border-left-0 border-right-0 border-top-0"},
         },
         FORM: [
             {
@@ -425,6 +459,7 @@ const ENTIDADES = {
             logoFooter: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Logotipo Footer OK",INVALID:"Logotipo Footer - 263px X 55px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"263px",CLASS:"bg-white"},
             favicon: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Favicon OK",INVALID:"Favicon",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/x-icon,image/png",NOMBRE:"imagen",WIDTH:"70px"},
             icon: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Ícono OK",INVALID:"Ícono - 111px X 67px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"111px"},
+            industria: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Ícono OK",INVALID:"Ícono - 75px X 68px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"75px"},
             header: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Header OK",INVALID:"Header - 1350px X 119px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"100%"},
         },
         FORM: [
@@ -432,7 +467,7 @@ const ENTIDADES = {
                 '<div class="col-7 col-md-5">/logo/</div><div class="col-5 col-md-5">/logoFooter/</div><div class="col-3 col-md-2">/favicon/</div>' : ['logo','logoFooter','favicon']
             },
             {
-                '<div class="col-7 col-md-4">/icon/</div><div class="col-5 col-md-5">/header/</div>' : ['icon','header']
+                '<div class="col-7 col-md-4">/icon/</div><div class="col-5 col-md-5">/header/</div><div class="col-3 col-md-2">/industria/</div>' : ['icon','header','industria']
             }
         ],
         FUNCIONES: {
@@ -440,7 +475,8 @@ const ENTIDADES = {
             logoFooter: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
             favicon: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
             icon: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
-            header: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+            header: {onchange:{F:"readURL(this,'/id/')",C:"id"}},
+            industria: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
         }
     }
 };

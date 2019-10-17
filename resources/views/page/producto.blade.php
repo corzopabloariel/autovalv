@@ -1,6 +1,6 @@
-<div class="wrapper-productos bg-white font-lato" style="padding-top: 15px;">
+<div class="wrapper-productos bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row" style="padding-bottom: 15px;">
+        <div class="row">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -11,7 +11,7 @@
             </div>
             @include( 'layouts.general.dato' )
         </div>
-        <div class="row pb-5">
+        <div class="row pb-5 mt-0 wrapper- normal">
             <div class="col-12 col-md-3">
                 <div class="sidebar dont-collapse-sm" id="accordionMenu">
                     <ul class="list-group list-group-flush menu-lateral">
@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="col-12 col-md producto-final">
-                <div class="row">
+                <div class="row normal">
                     <div class="col-12 col-md-4">
                         @php
                         $images = $data[ "producto" ]->images;
@@ -59,14 +59,17 @@
                             <div class="carousel-inner">
                                 @for($i = 0 ; $i < count($images) ; $i++)
                                 <div class="carousel-item @if($i == 0) active @endif">
-                                    <img class="d-block w-100" src="{{asset($images[$i]['image'][ 'i' ])}}" >
+                                    <img class="d-block w-100" src="{{ asset( $images[$i]['image'][ 'i' ] ) }}" >
                                 </div>
                                 @endfor
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md details">
-                        <h3 class="title px-3 py-2">{{ $data[ "producto" ]->title }}</h3>
+                        <h3 class="title px-3 py-2 position-relative">
+                            {{ $data[ "producto" ]->title }}
+                            <img src="{{ asset( $data[ 'empresa' ]->images[ 'industria' ][ 'i' ]) }}" style="width: 70px; right: 20px; top: -20px;" class="position-absolute" alt="Industria">
+                        </h3>
                         @foreach( $data[ "producto" ]->details AS $d )
                         <div class="row mb-0 mt-2">
                             <div class="col-12 col-md-4 key">{{ $d[ "key" ] }}</div>
@@ -74,7 +77,7 @@
                         </div>
                         @endforeach
                         <div class="mt-3">
-                            <a href="{{ $data[ 'producto' ]->file[ 'i' ] }} }}" class="btn btn-danger btn- rounded-pill px-3" target="blank">FICHA PDF</a>
+                            <a href="{{ asset( $data[ 'producto' ]->file[ 'i' ] ) }} }}" class="btn btn-danger btn- rounded-pill px-3" target="blank">FICHA PDF</a>
                         </div>
                     </div>
                 </div>

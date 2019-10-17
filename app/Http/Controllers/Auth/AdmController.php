@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -34,9 +35,9 @@ class AdmController extends Controller
         $dataRequest = $request->all();
         if( empty( $dataRequest ) ) {
             $data = [
-                "view"      => "auth.parts.empresa.imagen",
+                "view"      => "auth.parts.empresaImagen",
                 "title"     => "Imágenes",
-                "imagenes"  => Imagen::get()
+                "elementos"  => Imagen::get()
             ];
             return view('auth.distribuidor',compact('data'));
         }
@@ -105,7 +106,19 @@ class AdmController extends Controller
      */
     public function object( $request , $data = null , $merge = null ) {
         $datosRequest = $request->all();
+        if( isset( $datosRequest["REMOVE"] ) ) {
+            $datosRequest["REMOVE"] = json_decode( $datosRequest["REMOVE"] , true );
+            for( $i = 0 ; $i < count( $datosRequest["REMOVE"] ) ; $i ++ ) {
+                foreach( $datosRequest["REMOVE"][ $i ] AS $x => $info ) {
+                    if( gettype ( $info ) != "array" )
+                        continue;
 
+                    $filename = public_path() . "/{$info[ 'i' ]}";
+                    if ( file_exists( $filename ) )
+                        unlink( $filename );
+                }
+            }
+        }
         $datosRequest["ATRIBUTOS"] = json_decode( $datosRequest["ATRIBUTOS"] , true );
         $OBJ = [];
 
@@ -391,6 +404,8 @@ class AdmController extends Controller
                         /*if( !isset( $datosRequest[ $aux[ "BUCLE" ] ] ) )
                             continue 2;*/
                             //dd($datosRequest);
+                        if( !isset( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_{$aux[ "COLUMN" ]}" ] ) )
+                            continue 2;
                         for( $i = 0 ; $i < count( $datosRequest[ "{$aux[ "DATA" ][ "name" ]}_{$aux[ "COLUMN" ]}" ] ) ; $i++ ) {
                             $OBJ_AUX = [];
                             foreach( $aux[ "DATA" ][ "especificacion" ] AS $nombre => $tipo ) {

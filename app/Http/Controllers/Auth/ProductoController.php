@@ -20,7 +20,7 @@ class ProductoController extends Controller
             "view"      => "auth.parts.producto",
             "title"     => "Productos",
             "familias"  => Familia::where( 'elim' , 0 )->orderBy( 'order' )->pluck( 'title' , 'id' ),
-            "producto"  => $producto
+            "elementos"  => $producto
         ];
         return view('auth.distribuidor',compact('data'));
     }
@@ -37,7 +37,7 @@ class ProductoController extends Controller
     {
         //try {
             $OBJ = (new AdmController)->object( $request , $data );
-            //dd($OBJ);
+            dd($OBJ);
             if(is_null($data)) {
                 Producto::create($OBJ);
                 echo 1;

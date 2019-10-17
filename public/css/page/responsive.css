@@ -1,0 +1,87 @@
+.show-tablet {
+    display: none !important;
+}
+@media ( max-width: 576px ) {
+    .list-group.icon.list-group-horizontal {
+        display: block !important;
+    }
+    .list-group.icon.list-group-horizontal .list-group-item {
+        width: 100%;
+        display: block;
+    }
+}
+
+@media ( max-width: 768px ) {
+    header .navbar-brand img {
+        height: 35px;
+        width: auto;
+    }
+    header .ocsa {
+        height: 35px;
+    }
+    header .links {
+        display: none;
+    }
+    .row.SinEspacio > div {
+        padding: 0 !important;
+    }
+
+    .container-grid {
+        grid-template-areas: "cotizacion buscador";
+        grid-template-rows: auto;
+        grid-gap: 15px;
+        grid-template-columns: auto;
+        margin-top: 15px;
+    }
+
+    .cotizacion,
+    .buscador {
+        padding: 2em 0;
+    }
+    .cotizacion .title,
+    .buscador .title {
+        font-size: 31px !important;
+    }
+
+    .cotizacion span {
+        display: none;
+    }
+
+    .row .col-1, .row .col-2, .row .col-3, .row .col-4, .row .col-5, .row .col-6, .row .col-7, .row .col-8, .row .col-9, .row .col-10, .row .col-11, .row .col-12, .row .col, .row .col-auto, .row .col-sm-1, .row .col-sm-2, .row .col-sm-3, .row .col-sm-4, .row .col-sm-5, .row .col-sm-6, .row .col-sm-7, .row .col-sm-8, .row .col-sm-9, .row .col-sm-10, .row .col-sm-11, .row .col-sm-12, .row .col-sm, .row .col-sm-auto, .row .col-md-1, .row .col-md-2, .row .col-md-3, .row .col-md-4, .row .col-md-5, .row .col-md-6, .row .col-md-7, .row .col-md-8, .row .col-md-9, .row .col-md-10, .row .col-md-11, .row .col-md-12, .row .col-md, .row .col-md-auto, .row .col-lg-1, .row .col-lg-2, .row .col-lg-3, .row .col-lg-4, .row .col-lg-5, .row .col-lg-6, .row .col-lg-7, .row .col-lg-8, .row .col-lg-9, .row .col-lg-10, .row .col-lg-11, .row .col-lg-12, .row .col-lg, .row .col-lg-auto, .row .col-xl-1, .row .col-xl-2, .row .col-xl-3, .row .col-xl-4, .row .col-xl-5, .row .col-xl-6, .row .col-xl-7, .row .col-xl-8, .row .col-xl-9, .row .col-xl-10, .row .col-xl-11, .row .col-xl-12, .row .col-xl, .row .col-xl-auto, .container {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    .wrapper-empresa .contenido {
+        -webkit-column-count: 1;
+        -webkit-column-gap: 0;
+        -moz-column-count: 1;
+        -moz-column-gap: 0;
+        column-count: 1;
+        column-gap: 0;
+    }
+
+    .wrapper-contacto .row .col-12 .row .col-12 + .col-12 {
+        margin-top: 1em;
+    }
+    .wrapper-contacto form .row.normal > div + div {
+        margin-top: 1.5em;
+    }
+
+    .wrapper-productos .container > .row:nth-child( 2 ) .col-12 + .col-12 {
+        margin-top: 1.5em;
+    }
+}
+@media (max-width: 992px) {
+    #contacto-container {
+        margin-top: 0;
+    }
+    .wrapper-contacto form .col-12 + .col-12 {
+        margin-top: 1em;
+    }
+    .hidden-tablet {
+        display: none !important;
+    }
+    .show-tablet {
+        display: block !important;
+    }
+}

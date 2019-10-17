@@ -23,6 +23,7 @@
         <link href="{{ asset('css/page/page.css') }}" rel="stylesheet">
         <link href="{{ asset('css/page/header.css') }}" rel="stylesheet">
         <link href="{{ asset('css/page/footer.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/page/responsive.css') }}" rel="stylesheet">
         @stack( 'styles' )
         <!-- </Styles> -->
     </head>

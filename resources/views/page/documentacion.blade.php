@@ -1,6 +1,6 @@
-<div class="wrapper-documentacion bg-white font-lato" style="padding-top: 15px;">
+<div class="wrapper-documentacion bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row" style="padding-bottom: 15px;">
+        <div class="row normal">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -12,7 +12,7 @@
             @include( 'layouts.general.dato' )
         </div>
 
-        <div class="row font-lato pb-5">
+        <div class="row normal font-lato pb-5">
             @foreach( $data[ "documentacion" ] AS $d )
             <div class="col-12 col-md-4 col-lg-3 mt-3 text-center">
                 <div class="card mx-auto border-0">

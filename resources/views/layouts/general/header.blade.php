@@ -6,7 +6,10 @@
                     <a class="navbar-brand" href="{{ route('index') }}">
                         <img onError="this.src='{{ asset('images/general/no-img.png') }}'" src="{{ asset($data['empresa']['images']['logo']['i']) }}?t=<?php echo time(); ?>" />
                     </a>
-                    <img src="{{ asset($data['empresa']['images']['icon']['i']) }}" alt="">
+                    <img src="{{ asset($data['empresa']['images']['icon']['i']) }}" alt="" class="ocsa">
+                    <button class="navbar-toggler rounded-0 bg-white show-tablet" type="button" data-toggle="modal" data-target="#menuNav" style="right:0;">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
             </div>
         </div>

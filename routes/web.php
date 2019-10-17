@@ -75,7 +75,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
 
     //Route::resource('redes', 'Auth\EmpresaController')->except(['index','update']);
     Route::get('empresa/redes', ['uses' => 'Auth\EmpresaController@redes', 'as' => 'empresa.redes']);
-    Route::post('redes', ['uses' => 'Auth\EmpresaController@redesStore', 'as' => 'empresa.create']);
+    Route::post('redes', ['uses' => 'Auth\EmpresaController@redesStore', 'as' => 'redes.create']);
+    Route::get('redes/{id}/edit', ['uses' => 'Auth\EmpresaController@redesEdit', 'as' => 'redes.edit']);
     Route::post('redes/update/{id}', ['uses' => 'Auth\EmpresaController@redesUpdate', 'as' => 'redes.update']);
     Route::delete('redes/delete', ['uses' => 'Auth\EmpresaController@redesDestroy', 'as' => 'redes.delete']);
 

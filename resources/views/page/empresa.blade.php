@@ -1,4 +1,4 @@
-<div class="wrapper-empresa bg-white font-lato" style="padding-top: 15px;">
+<div class="wrapper-empresa bg-white font-lato wrapper-">
     <div id="carouselExampleIndicators" class="carousel bg-white slide wrapper-slider" data-ride="carousel">
         <ol class="carousel-indicators">
             @for($i = 0 ; $i < count($data['sliders']) ; $i++)
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row py-4">
+        <div class="row py-4 normal">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>

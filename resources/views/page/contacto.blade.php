@@ -1,6 +1,6 @@
-<div class="wrapper-contacto bg-white font-lato" style="padding-top: 15px;">
+<div class="wrapper-contacto bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row" style="margin-bottom: 15px;">
+        <div class="row normal">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -11,13 +11,13 @@
             </div>
             @include( 'layouts.general.dato' )
         </div>
-        <div class="pb-4">
+        <div class="pb-4 wrapper-">
             <form action="" method="post" class="p-4">
                 @csrf
                 <div class="p-2">
-                    <div class="row">
+                    <div class="row normal">
                         <div class="col-12 col-md-8">
-                            <div class="row">
+                            <div class="row normal">
                                 <div class="col-12 col-md">
                                     <input type="text" name="nombre" class="form-control" placeholder="Nombre">
                                 </div>
@@ -25,7 +25,7 @@
                                     <input type="text" name="apellido" class="form-control" placeholder="Apellido">
                                 </div>
                             </div>
-                            <div class="row mt-4">
+                            <div class="row normal mt-4">
                                 <div class="col-12 col-md">
                                     <input type="text" name="empresa" class="form-control" placeholder="Empresa">
                                 </div>
@@ -35,7 +35,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="row mt-4">
+                            <div class="row normal mt-4">
                                 <div class="col-12 col-md">
                                     <input type="email" name="email" class="form-control" placeholder="Email">
                                 </div>
@@ -43,12 +43,12 @@
                                     <input type="phone" name="telefono" class="form-control" placeholder="Teléfono">
                                 </div>
                             </div>
-                            <div class="row mt-4">
+                            <div class="row normal mt-4">
                                 <div class="col-12 col-md">
                                     <textarea name="mensaje" id="" class="form-control" placeholder="Mensaje" rows="4"></textarea>
                                 </div>
                             </div>
-                            <div class="row mt-4">
+                            <div class="row normal mt-4">
                                 <div class="col-12 terminos">
                                     <div class="form-check">
                                         <input onchange="terminosShow( this , 'btn' );" required class="form-check-input" type="checkbox" name="terminos" value="1" id="terminos">

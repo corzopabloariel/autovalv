@@ -14,50 +14,28 @@
 </div>
 
 @push('scripts')
-<script src="//cdn.ckeditor.com/4.7.3/full/ckeditor.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     window.pyrus = new Pyrus("terminos", null, src);
-    window.contenido = @json($data["contenido"]);
-
-    formSubmit = function(t) {
-        let idForm = t.id;
-        let formElement = document.getElementById( idForm );
-
-        let formData = new FormData( formElement );
-        formData.append("ATRIBUTOS",JSON.stringify(
-            [
-                { DATA: window.pyrus.objetoSimple , TIPO: "U" }
-            ]
-        ));
-
-        for( let x in CKEDITOR.instances )
-            formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
-        formSave( t , formData );
+    /** -------------------------------------
+        Agrega o ejecuta algún evento después de la carga inicial
+     ** ------------------------------------- */
+    addfinish = () => {
+        $( `#${window.pyrus.name}_section`).val( window.data.section );
     };
-    shortcut.add("Alt+Ctrl+S", function () {
-        if($("#form").is(":visible")) {
-            $("#form").submit();
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
-    /** ------------------------------------- */
-    init = function(callbackOK) {
+    /** -------------------------------------
+     *      INICIO
+     ** ------------------------------------- */
+    init = ( callbackOK ) => {
         console.log("CONSTRUYENDO FORMULARIO Y TABLA");
         /** */
         $("#form .container-form").html( window.pyrus.formulario() );
         window.pyrus.editor( CKEDITOR );
-        setTimeout(() => {
-            callbackOK.call(this);
-        }, 50);
-    }
+        
+        callbackOK.call(this);
+    };
     /** */
-    init(function() {
-        if( window.contenido.content !== null )
-            window.pyrus.show( CKEDITOR , `{{ asset('/') }}` , window.contenido.content );
+    init( () => {
+        window.pyrus.show( CKEDITOR , null , window.data.elementos.content );
     });
 </script>
 @endpush

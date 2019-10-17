@@ -25,12 +25,20 @@ terminosShow = ( t , btn ) => {
         $( `#${btn}` ).prop( "disabled" , true );
 };
 /** -------------------------------------
+ *      MOSTRAR COMBINACIONES DE TECLAS
+ ** ------------------------------------- */
+showCombinacion = ( t ) => {
+    $( "#modalCombinacion" ).modal( "show" );
+};
+/** -------------------------------------
  *      COPIAR IMAGEN
  ** ------------------------------------- */
 copy = ( t , url ) => {
-    let copyText = document.getElementById( "copyURL" );
-    copyText.select();
+    $temp = $(`<input>`);
+    $("body").append($temp);
+    $temp.val($( t ).parent().find( "a" ).text()).select();
     document.execCommand("copy");
+    $temp.remove();
     alertify.success( "Imagen copiada" );
 };
 /** -------------------------------------
@@ -52,12 +60,24 @@ remove = ( t ) => {
         () => {}
     ).set( 'labels' , { ok : 'Confirmar' , cancel : 'Cancelar' } );
 };
+
+removeImage = ( t ) => {
+    let button = $( t );
+    let id = button.prop( "id" );
+    id = id.replace( "_button" , "" );
+    $( `#${id}` ).val( "" );
+    id = `src-${id}`;
+    $( `#${id}` ).prop( `src` , $( `#${id}` ).data( "src" ) );
+    $( `#${id}-2` ).prop( `src` , $( `#${id}-2` ).data( "src" ) );
+    button.prop( `disabled` , true );
+};
 /** -------------------------------------
  *      EDITAR REGISTRO
  ** ------------------------------------- */
 edit = ( t , id ) => {
     $( t ).prop( "disabled" , true );
     window.pyrus.one( `${url_simple}/adm/${window.pyrus.name}/${id}/edit`, function( res ) {
+        console.log(res)
         $( '[data-toggle="tooltip"]' ).tooltip( 'hide' );
         $( t ).prop( "disabled" , false );
         add( $( "#btnADD" ) , parseInt( id ) ,res.data );
@@ -71,6 +91,9 @@ readURL = ( input , target ) => {
         let reader = new FileReader();
         reader.onload = ( e ) => {
             $( `#${target}` ).prop( `src` , `${e.target.result}` );
+            $( `#${target}-2` ).prop( `src` , `${e.target.result}` );
+            target = target.replace( "src-" , "" );
+            $( `#${target}_button` ).prop( `disabled` , false );
         };
         reader.readAsDataURL( input.files[ 0 ] );
     }
@@ -117,12 +140,8 @@ formSave = ( t , formData ) => {
     })
     .then(() => {});
 };
-/** -------------------------------------
- *      OBJETO A GUARDAR
- ** ------------------------------------- */
-formSubmit = ( t ) => {
-    let idForm = t.id;
-    let formElement = document.getElementById( idForm );
+
+verificarForm = () => {
     if( window.pyrus.objeto.NECESARIO !== undefined ) {
         flag = 0;
         alert = "";
@@ -138,10 +157,21 @@ formSubmit = ( t ) => {
         }
         if( flag ) {
             alertify.error( `Complete los siguientes campos: ${alert}` , 100 );
-            return null;
+            return false;
         }
+        return true;
     }
+    return true
+};
+/** -------------------------------------
+ *      OBJETO A GUARDAR
+ ** ------------------------------------- */
+formSubmit = ( t ) => {
+    let idForm = t.id;
+    let formElement = document.getElementById( idForm );
 
+    if( !verificarForm() )
+        return null;
     let formData = new FormData( formElement );
     formData.append("ATRIBUTOS",JSON.stringify(
         [
@@ -245,6 +275,6 @@ init = ( callbackOK ) => {
     $( "#wrapper-tabla > div.card-body" ).html( window.pyrus.table( [ { NAME:"ACCIONES" , COLUMN: "acciones" , CLASS: "text-center" , WIDTH: "150px" } ] ) );
     
     window.pyrus.editor( CKEDITOR );
-    window.pyrus.elements( $( "#tabla" ) , url_simple , window.elementos , [ "e" , "d" ] );
+    window.pyrus.elements( $( "#tabla" ) , url_simple , window.data.elementos , [ "e" , "d" ] );
     callbackOK.call( this , null );
 };

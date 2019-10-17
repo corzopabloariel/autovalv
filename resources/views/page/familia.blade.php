@@ -1,6 +1,6 @@
-<div class="wrapper-productos bg-white font-lato" style="padding-top: 15px;">
+<div class="wrapper-productos bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row" style="padding-bottom: 15px;">
+        <div class="row normal">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -11,8 +11,8 @@
             </div>
             @include( 'layouts.general.dato' )
         </div>
-        <div class="row pb-5">
-            <div class="col-12 col-md-4">
+        <div class="row pb-5 mt-0 wrapper- normal">
+            <div class="col-12 col-md-3">
                 <div class="sidebar dont-collapse-sm" id="accordionMenu">
                     <ul class="list-group list-group-flush menu-lateral">
                     @foreach( $data[ "familias" ] AS $m )
@@ -44,8 +44,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-12 col-md">
-                <div class="row">
+            <div class="col-12 col-md-9">
+                <div class="row normal">
                     @foreach( $data[ "productos" ] AS $p )
                         @php
                             $images = $p->images;
@@ -53,7 +53,7 @@
                             if( count( $images ) > 0)
                                 $img = $images[ 0 ]->image[ 'i' ];
                         @endphp
-                        <div class="col-12 col-md-6 col-lg-4 producto">
+                        <div class="col-12 col-md-6 col-lg-4 producto wrapper-link">
                             <a href="{{ URL::to( 'productos/' . str_slug( $data['familia']->title ) . '/' . str_slug( $p->title ) . '/' . $p->id ) }}">
                                 <div class="card">
                                     <img src="{{ asset( $img ) }}" alt="" class="card-img-top border border-bottom-0">

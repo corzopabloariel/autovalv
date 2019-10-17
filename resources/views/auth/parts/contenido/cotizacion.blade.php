@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            {!! $data[ "contenido" ]->content[ 'text' ] !!}
+                            {!! $data[ "elementos" ]->content[ 'text' ] !!}
                         </div>
                     </div>
                 </div>
@@ -23,59 +23,15 @@
     </div>
 </div>
 @push('scripts')
-<script src="//cdn.ckeditor.com/4.7.3/full/ckeditor.js"></script>
 <script>
-    window.contenido = @json( $data[ "contenido" ] );
-    window.pyrus = new Pyrus( "terminos" , null , src );
+    window.pyrus = new Pyrus( "terminos" , null , src , { frase : { REMOVE : 1 } } );
     
-    formSubmit = ( t ) => {
-        let idForm = t.id;
-        let formElement = document.getElementById( idForm );
-
-        let formData = new FormData( formElement );
-        /**
-         * KEY - DATA
-         */
-        formData.append("ATRIBUTOS",JSON.stringify(
-            [
-                { DATA: window.pyrus.objetoSimple, TIPO: "U" },
-            ]
-        ));
-
-        for( let x in CKEDITOR.instances )
-            formData.set( x , CKEDITOR.instances[ `${x}` ].getData() );
-        formSave( t , formData );
-    };
-    shortcut.add("Alt+Ctrl+S", function () {
-        if($("#form").is(":visible")) {
-            $("#form").submit();
-        }
-    }, {
-        "type": "keydown",
-        "propagate": true,
-        "target": document
-    });
-    remove_ = ( t , class_ ) => {
-        let target =  $( t ).closest( `.${class_}` );
-        if( window.imgDelete === undefined )
-            window.imgDelete = [];
-        if( target.find( ".hidden" ).val() != "" )
-            window.imgDelete.push( target.attr( "src" ) );
-        
-        target.remove();
-    };
-    /** ------------------------------------- */
-    init = ( callbackOK ) => {
-        $("#form .container-form").html( window.pyrus.formulario() );
-        window.pyrus.editor( CKEDITOR );
-        setTimeout(() => {
-            callbackOK.call(this);
-        }, 50);
-    };
-    /** */
-    init(function() {
-        if( window.contenido.content !== null )
-            window.pyrus.show( CKEDITOR , `{{ asset('/') }}` , window.contenido.content );
+    /** -------------------------------------
+     *      INICIO
+     ** ------------------------------------- */
+    init( () => {
+        if( window.data.elementos.content !== null )
+            window.pyrus.show( CKEDITOR , null , window.data.elementos.content );
     });
 </script>
 @endpush

@@ -1,6 +1,6 @@
 header .navbar .row {
-    background: #1A56AC;
-    color: #fff;
+    background: var( --colorA );
+    color: var( --white );
     font-weight: 500;
 }
 header .links a {
@@ -12,7 +12,7 @@ header .links a {
 }
 header .active,
 header .links a:hover {
-    background-color: #ED5A2F;
+    background-color: var( --color );
     -webkit-transition: all 800ms ease;
     -moz-transition: all 800ms ease;
     -ms-transition: all 800ms ease;
@@ -27,5 +27,8 @@ header .navbar-brand img {
     width: 334px;
 }
 header .links a + a {
-    border-left: 2px solid #fff;
+    border-left: 2px solid var( --white );
+}
+header .ocsa {
+    height: 70px;
 }
