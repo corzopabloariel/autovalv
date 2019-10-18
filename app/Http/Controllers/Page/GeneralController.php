@@ -36,6 +36,10 @@ class GeneralController extends Controller
                 "keywords" => ""
             ]
         ];
+        if( !empty( $link ) ) {
+            if( isset( $datos->metadata[ $link ] ) )
+                $data[ "metadato" ] = $datos->metadata[ $link ];
+        }
         return $data;
     }
 
@@ -110,6 +114,7 @@ class GeneralController extends Controller
         $data = self::datos( "productos" );
         $link = "producto";
         $data[ "producto" ] = Producto::find( $id );
+        $data[ "metadato" ][ "keywords" ] = $data[ "producto" ]->metadata;
         $data[ "familia" ] = $data[ "producto" ]->familia;
         $data[ "productos" ] = $data[ "familia" ]->productos()->where( "elim", 0 )->orderBy("order")->paginate(15);
         $data[ "familias" ] = Familia::where( 'elim' , 0 )->orderBy( 'order' )->get();
