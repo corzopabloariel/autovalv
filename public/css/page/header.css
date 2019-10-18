@@ -24,11 +24,46 @@ header .navbar-brand {
     bottom: 20px;
 }
 header .navbar-brand img {
-    width: 334px;
+    width: 263px;
 }
 header .links a + a {
     border-left: 2px solid var( --white );
 }
 header .ocsa {
     height: 70px;
+}
+
+
+#menuNav .modal-dialog {
+    margin: 0;
+}
+#menuNav .modal-dialog .modal-content {
+    border-radius: 0;
+}
+#menuNav .modal-footer {
+    align-items: initial;
+    justify-content: initial;
+}
+#menuNav .activeImportat,
+#menuNav .activeIdioma {
+    color: #D7BE89 !important;
+}
+#menuNav .idiomas li + li {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid rgb(68, 68, 71);
+}
+#menuNav .info:not(.modal-footer) i {
+    font-size: 24px;
+    color: #BF1939;
+}
+#menuNav .info form input {
+    border: none;
+    outline: none;
+    font-size: inherit;
+    font-family: inherit;
+}
+#menuNav .info form i {
+    right: 10px;
+    top: calc(50% - 8px);
 }

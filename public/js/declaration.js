@@ -29,10 +29,8 @@ const ENTIDADES = {
         },
         EDITOR: {
             content: {
-                toolbarGroups: [{
-                        "name": "basicstyles",
-                        "groups": ["basicstyles"]
-                    },
+                toolbarGroups: [
+                    { name: "basicstyles", groups: ["basicstyles"] },
                     { name: 'clipboard', groups: [ 'clipboard', 'undo' ]},
                     { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
                     { name: 'links'},
@@ -63,17 +61,27 @@ const ENTIDADES = {
         ],
         FUNCIONES: {
             image: {onchange:{F:"readURL(this,'/id/')",C:"id"}}
+        },
+        EDITOR: {
+            title: {
+                toolbarGroups: [
+                    { name: "basicstyles", groups: ["basicstyles"] },
+                ],
+                removeButtons: 'CreateDiv,Language'
+            }
         }
     },
     producto: {
         TABLE: "productos",
         ATRIBUTOS: {
             order:      {TIPO:"TP_STRING",MAXLENGTH:3,VISIBILIDAD:"TP_VISIBLE",CLASS:"text-uppercase text-center border-left-0 border-right-0 border-top-0 rounded-0",WIDTH:"70px",NOMBRE:"orden",LABEL:1},
-            destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Producto destacado?",VALUE:1},
+            destacado: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Producto destacado?",VALUE:1,OPTION:{ "" : "NO" , 1 : "Si"}},
+            argentina: {TIPO:"TP_CHECK",VISIBILIDAD:"TP_VISIBLE",CHECK:"¿Industría Argentina?",VALUE:1,OPTION:{ "" : "NO" , 1 : "Si"},NOMBRE:"industria argentina"},
             familia_id: {TIPO:"TP_ENUM",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Familia",COMUN:1,LABEL:1,ENUMOP:"familias",RELACION:{ E : "familias" , A : "title" },CLASS:"border-left-0 border-right-0 border-top-0" },
             title:      {TIPO:"TP_STRING",MAXLENGTH: 100,VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
             file: {TIPO:"TP_FILE",NECESARIO:1,VALID:"Archivo seleccionado",INVALID:"Seleccione archivo",BROWSER:"Buscar",VISIBILIDAD:"TP_VISIBLE_FORM",ACCEPT:"image/jpeg,application/pdf",NOMBRE:"ficha",WIDTH:"190px",SIMPLE:1, LABEL:1},
-            content:    {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"texto"}
+            content:    {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"texto"},
+            metadata: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE_FORM",FIELDSET:1,NOMBRE:"Metadatos",HELP:"Metadatos del producto. Separe con comas <strong>(,)</strong>"},
         },
         
         FORM: [
@@ -81,18 +89,22 @@ const ENTIDADES = {
                 '<div class="col-12 col-md">/order/</div><div class="col-12 col-md-6">/title/</div><div class="col-12 col-md-4">/familia_id/</div>':['title','order','familia_id'],
             },
             {
-                '<div class="col-12 col-md-6">/file/</div><div class="col-12 col-md-6">/destacado/</div>' : [ 'file' , 'destacado' ]
+                '<div class="col-12 col-md-6">/file/</div><div class="col-12 col-md-6">/destacado//argentina/</div>' : [ 'file' , 'destacado' , 'argentina' ]
+            },
+            {
+                '<div class="col-12" id="detallesFORM"></div>' : [ 'VACIO' ]
             },
             {
                 '<div class="col-12">/content/</div>' : [ 'content' ]
+            },
+            {
+                '<div class="col-12">/metadata/</div>' : [ 'metadata' ]
             }
         ],
         EDITOR: {
             content: {
-                toolbarGroups: [{
-                        "name": "basicstyles",
-                        "groups": ["basicstyles"]
-                    },
+                toolbarGroups: [
+                    { name: "basicstyles", groups: ["basicstyles"] },
                     { name: 'clipboard', groups: [ 'clipboard', 'undo' ]},
                     { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi' ] },
                     { name: 'links'},
@@ -264,7 +276,7 @@ const ENTIDADES = {
         ATRIBUTOS: {
             title: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
             text: {TIPO:"TP_TEXT",EDITOR:1,VISIBILIDAD:"TP_VISIBLE",FIELDSET:1,NOMBRE:"texto"},
-            frase: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Frase en formularios",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",LABEL:1},
+            frase: {TIPO:"TP_TEXT",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"Frase en formularios",CLASS:"border-left-0 border-right-0 border-top-0 rounded-0",FIELDSET:1,EDITOR:1},
         },
         FORM: [
             {
@@ -279,6 +291,16 @@ const ENTIDADES = {
         ],
         EDITOR: {
             text: {
+                toolbarGroups: [
+                    { name: 'document', groups : [ 'mode' , 'document' , 'doctools' ] },
+                    { name: 'basicstyles', groups : [ 'basicstyles' ] },
+                    { name: 'clipboard', groups : [ 'clipboard' , 'undo' ] },
+                    { name: 'links' },
+                    { name: 'colors', groups: [ 'TextColor' , 'BGColor' ] },
+                ],
+                removeButtons: 'Save,NewPage,Print,Preview,Templates'
+            },
+            frase: {
                 toolbarGroups: [
                     { name: 'document', groups : [ 'mode' , 'document' , 'doctools' ] },
                     { name: 'basicstyles', groups : [ 'basicstyles' ] },

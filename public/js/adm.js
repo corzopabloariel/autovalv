@@ -77,7 +77,6 @@ removeImage = ( t ) => {
 edit = ( t , id ) => {
     $( t ).prop( "disabled" , true );
     window.pyrus.one( `${url_simple}/adm/${window.pyrus.name}/${id}/edit`, function( res ) {
-        console.log(res)
         $( '[data-toggle="tooltip"]' ).tooltip( 'hide' );
         $( t ).prop( "disabled" , false );
         add( $( "#btnADD" ) , parseInt( id ) ,res.data );

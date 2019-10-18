@@ -61,6 +61,9 @@
                 </div>
             </div>
         </div>
+        @isset( $data[ "whatsapp" ] )
+        <a target="blank" href="https://wa.me/{{ $data[ 'whatsapp' ][ 'telefono' ] }}" class="whatsapp-flotante shadow rounded-circle position-fixed d-flex justify-content-center align-items-center text-white"><i class="fab fa-whatsapp"></i></a>
+        @endisset
         @include( 'layouts.general.message' )
         <div class="">
             @include( 'layouts.general.header' )

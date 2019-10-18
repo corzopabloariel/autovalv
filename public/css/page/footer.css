@@ -4,14 +4,17 @@ footer {
     background: -webkit-linear-gradient(top,  #f6f6f6 0%,#f6f6f6 0%,#e6e7e8 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom,  #f6f6f6 0%,#f6f6f6 0%,#e6e7e8 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f6f6', endColorstr='#e6e7e8',GradientType=0 ); /* IE6-9 */
-    font-size: 13px;
+    font-size: 17px;
     border-top: 2px solid var( --color );
-    color: #777777;
+    color: #000;
 }
 footer .title {
-    font-size: 14px;
-    color: var( --gray-dark );
+    font-size: 18px;
+    color: #000;
     font-weight: 500;
+}
+footer a:hover {
+    text-decoration: underline;
 }
 footer .icono {
     color: var( --color );
@@ -42,8 +45,8 @@ footer .menu {
 footer .logo {
     width: 263px;
 }
-footer .logo + div {
+footer .frase {
     color: var( --colorA );
     font-size: 20px;
-    font-weight: 300;
+    font-weight: 600;
 }

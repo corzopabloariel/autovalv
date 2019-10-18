@@ -1,16 +1,26 @@
 .show-tablet {
     display: none !important;
 }
-@media ( max-width: 576px ) {
-    .list-group.icon.list-group-horizontal {
-        display: block !important;
-    }
-    .list-group.icon.list-group-horizontal .list-group-item {
-        width: 100%;
-        display: block;
+@media ( max-width: 1200px ) and ( min-width: 992px ) {
+    .buscador > div .title, .cotizacion > div .title {
+        font-size: 30px;
     }
 }
+@media ( max-width: 768px ) and ( min-width: 576px ) {
+    .cotizacion.titulo {
+        font-size: 80%;
+    }
+    .cotizacion.titulo > div.position-absolute + div {
+        flex-direction: column !important;
+    }
+    .wrapper-contacto form > div > div > div:last-child {
+        margin-top: 1.5em;
+    }
 
+    footer .logo {
+        max-width: 100%;
+    }
+}
 @media ( max-width: 768px ) {
     header .navbar-brand img {
         height: 35px;
@@ -30,7 +40,7 @@
         grid-template-areas: "cotizacion buscador";
         grid-template-rows: auto;
         grid-gap: 15px;
-        grid-template-columns: auto;
+        grid-template-columns: 1fr 1fr;
         margin-top: 15px;
     }
 
@@ -60,23 +70,42 @@
         column-gap: 0;
     }
 
+    .wrapper-productos .container > .row:nth-child( 2 ) .col-12 + .col-12 {
+        margin-top: 1.5em;
+    }
+}
+@media ( max-width: 576px ) {
+    .navbar > div {
+        background: #ffffff !important;
+    }
+    .list-group.icon.list-group-horizontal {
+        display: block !important;
+    }
+    .list-group.icon.list-group-horizontal .list-group-item {
+        width: 100%;
+        display: block;
+    }
     .wrapper-contacto .row .col-12 .row .col-12 + .col-12 {
         margin-top: 1em;
     }
     .wrapper-contacto form .row.normal > div + div {
         margin-top: 1.5em;
     }
-
-    .wrapper-productos .container > .row:nth-child( 2 ) .col-12 + .col-12 {
-        margin-top: 1.5em;
+    footer .col-12 + .col-12 {
+        margin-top: 2.5em;
+    }
+    .container-grid {
+        grid-template-areas: "cotizacion"
+                            "buscador";
+        grid-template-rows: 1fr 1fr;
+        grid-gap: 15px;
+        grid-template-columns: auto;
+        margin-top: 15px;
     }
 }
 @media (max-width: 992px) {
     #contacto-container {
         margin-top: 0;
-    }
-    .wrapper-contacto form .col-12 + .col-12 {
-        margin-top: 1em;
     }
     .hidden-tablet {
         display: none !important;

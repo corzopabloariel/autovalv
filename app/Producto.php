@@ -9,11 +9,13 @@ class Producto extends Model
     protected $fillable = [
         'familia_id',
         'destacado',
+        'argentina',
         'order',
         'file',
         'details',
         'content',
         'title',
+        'metadata',
         'elim'
     ];
     

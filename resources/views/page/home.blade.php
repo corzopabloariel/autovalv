@@ -31,18 +31,38 @@
                     <div class="ml-5 pl-3 pr-5 w-100">
                         <h3 class="title font-roboto">Buscar Productos</h3>
                         <p class="font-lat">Por Modelo o Código</p>
-                        <div class="d-flex align-items-center">
+                        <form action="{{ route( 'buscar' ) }}" method="get" class="d-flex align-items-center">
                             <i class="fas fa-search mr-3"></i><input type="search" name="buscar" placeholder="Estoy buscando..." style="width: auto;" class="form-control text-white px-0 bg-transparent border-left-0 border-right-0 border-top-0"/>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container destacado py-4">
+    <div class="container destacado py-5">
         <h3 class="title text-center font-lato">
             <span>PRODUCTOS DESTACADOS</span>
         </h3>
+        <div class="row normal mt-3">
+            @foreach( $data[ "productos" ] AS $p )
+                @php
+                    $images = $p->images;
+                    $img = "";
+                    if( count( $images ) > 0)
+                        $img = $images[ 0 ]->image[ 'i' ];
+                @endphp
+                <div class="col-12 col-md-6 col-lg-3 mt-4 producto wrapper-link">
+                    <a href="{{ URL::to( 'productos/' . str_slug( $p->familia->title ) . '/' . str_slug( $p->title ) . '/' . $p->id ) }}">
+                        <div class="card">
+                            <img src="{{ asset( $img ) }}" alt="" class="card-img-top border-bottom-0">
+                            <div class="card-body font-lato text-center">
+                                {!! $p->title !!}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
     </div>
     <div class="iconos">
         <div class="container">
@@ -50,11 +70,11 @@
                 <div class="col-12">
                     <ul class="list-group py-4 list-group-horizontal d-flex justify-content-center icon border-0">
                         @foreach( $data[ "contenido" ]->content[ 'icon' ] AS $c )
-                            <li class="list-group-item d-flex bg-transparent align-items-center flex-column px-5 border-0">
+                            <li class="list-group-item d-flex bg-transparent align-items-center flex-column px-4 border-0">
                                 @isset( $c[ 'icon' ][ 'i' ] )
                                 <img src="{{ asset( $c[ 'icon' ][ 'i' ] ) }}" alt="icon" class="mb-2" srcset="">
                                 @endisset
-                                <p class="mx-auto text-center">{!! $c[ 'text' ] !!}</p>
+                                <div class="mx-auto text-center">{!! $c[ 'text' ] !!}</div>
                             </li>
                         @endforeach
                     </ul>

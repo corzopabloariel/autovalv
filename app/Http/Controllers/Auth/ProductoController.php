@@ -8,20 +8,35 @@ use App\Producto;
 use App\Familia;
 class ProductoController extends Controller
 {
+    public $model;
+    public function __construct() {
+        $this->model = new Producto;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index( Request $request )
     {
-        $producto = Producto::where( 'elim',0 )->orderBy('order')->paginate( 15 );
+        $dataRequest = $request->all();
+        $producto = $this->model::where( 'elim',0 )->orderBy( 'familia_id' )->orderBy('order')->paginate( 15 );
         $data = [
             "view"      => "auth.parts.producto",
             "title"     => "Productos",
             "familias"  => Familia::where( 'elim' , 0 )->orderBy( 'order' )->pluck( 'title' , 'id' ),
             "elementos"  => $producto
         ];
+        if( isset( $dataRequest[ "buscar" ] ) ) {
+            $buscar = $dataRequest[ "buscar" ];
+            $data[ "buscar" ] = $buscar;
+            $data[ "elementos" ] = $this->model::where( "title" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
+                where( 'elim' , 0 )->orWhere( "metadata" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
+                orWhereHas('familia', function ($query) use ($buscar) {
+                    $query->where('title', 'LIKE', "%{$buscar}%");
+                })->where( 'elim' , 0 )->
+                orderBy( 'order' )->paginate( 15 );
+        }
         return view('auth.distribuidor',compact('data'));
     }
 
@@ -37,9 +52,9 @@ class ProductoController extends Controller
     {
         //try {
             $OBJ = (new AdmController)->object( $request , $data );
-            dd($OBJ);
+            //dd($OBJ);
             if(is_null($data)) {
-                Producto::create($OBJ);
+                $this->model::create($OBJ);
                 echo 1;
             } else {
                 $data->fill($OBJ);
@@ -59,7 +74,7 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        return Producto::find($id);
+        return $this->model::find($id);
     }
 
     /**
@@ -75,6 +90,24 @@ class ProductoController extends Controller
         return self::store($request,$data);
     }
 
+    public function file( $id ) 
+    {
+        $data = self::edit( $id );
+        //dd($data);
+        try {
+            if( !empty( $data->file ) ) {
+                $filename = public_path() . "/{$data->file[ 'i' ]}";
+                if ( file_exists( $filename ) )
+                    unlink( $filename );
+            }
+            $data->fill( [ "file" => null ] );
+            $data->save();
+            return 1;
+        } catch (\Throwable $th) {
+            return 0;
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -83,10 +116,8 @@ class ProductoController extends Controller
      */
     public function destroy(Request $request)
     {
-        $model = new Producto;
-        
         try {
-            (new AdmController)->delete( self::edit( $request->all()[ "id" ] ) , $model->getFillable() );
+            (new AdmController)->delete( self::edit( $request->all()[ "id" ] ) , $this->model->getFillable() );
             return 1;
         } catch (\Throwable $th) {
             return 0;

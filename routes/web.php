@@ -13,9 +13,14 @@
 
 Route::get( '{link?}' ,
     [ 'uses' => 'Page\GeneralController@index' , 'as' => 'index' ]
-)->where( 'link' , "index|empresa|productos|documentacion|dimensionamiento|contacto|cotizacion" );
+)->where( 'link' , "index|empresa|productos|documentacion|dimensionamiento|contacto|cotizacion|terminos" );
 Route::get('productos/{url}/{id}', [ 'uses' => 'Page\GeneralController@familia', 'as' => 'familia' ]);
 Route::get('productos/{url}/{url2}/{id}', [ 'uses' => 'Page\GeneralController@producto', 'as' => 'producto' ]);
+Route::get('contacto/{url}/{id}', [ 'uses' => 'Page\GeneralController@contacto', 'as' => 'contacto' ]);
+
+Route::get('buscar', [ 'uses' => 'Page\GeneralController@buscar', 'as' => 'buscar' ]);
+Route::post('contacto', [ 'uses' => 'Page\FormController@contacto', 'as' => 'contacto' ]);
+Route::post('cotizacion', [ 'uses' => 'Page\FormController@cotizacion', 'as' => 'cotizacion' ]);
 
 Auth::routes();
 
@@ -48,8 +53,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function() {
     /**
      * PRODUCTO
      */
-    Route::resource('productos', 'Auth\ProductoController')->except(['update']);
+    Route::resource('productos', 'Auth\ProductoController')->except(['index','show','update']);
+    Route::match(['get', 'post'], 'productos',['as' => 'productos.index','uses' => 'Auth\ProductoController@index' ]);
     Route::post('productos/update/{id}', ['uses' => 'Auth\ProductoController@update', 'as' => 'productos.update']);
+    Route::get('producto/{id}/file',['as' => 'productos.file','uses' => 'Auth\ProductoController@file' ]);
     /**
      * PRODUCTOIMAGE
      */

@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="container">
-        <div class="row py-4 normal">
+        <div class="row py-4 SinEspacio">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -25,7 +25,7 @@
             </div>
             @include( 'layouts.general.dato' )
         </div>
-        <div class="row pb-5 mt-0">
+        <div class="row pb-5 mt-0 SinEspacio">
             <div class="col-12 text-justify contenido">
                 {!! $data[ "contenido" ]->content[ "text1" ] !!}
                 <div class="frase1 my-4 text-center font-roboto">
