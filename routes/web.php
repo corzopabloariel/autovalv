@@ -18,7 +18,7 @@ Route::get('productos/{url}/{id}', [ 'uses' => 'Page\GeneralController@familia',
 Route::get('productos/{url}/{url2}/{id}', [ 'uses' => 'Page\GeneralController@producto', 'as' => 'producto' ]);
 Route::get('contacto/{url}/{id}', [ 'uses' => 'Page\GeneralController@contacto', 'as' => 'contacto' ]);
 
-Route::get('buscar', [ 'uses' => 'Page\GeneralController@buscar', 'as' => 'buscar' ]);
+Route::get('search', [ 'uses' => 'Page\GeneralController@buscar', 'as' => 'buscar' ]);
 Route::post('contacto', [ 'uses' => 'Page\FormController@contacto', 'as' => 'contacto' ]);
 Route::post('cotizacion', [ 'uses' => 'Page\FormController@cotizacion', 'as' => 'cotizacion' ]);
 

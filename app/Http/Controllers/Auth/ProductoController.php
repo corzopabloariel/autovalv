@@ -29,7 +29,8 @@ class ProductoController extends Controller
         ];
         if( isset( $dataRequest[ "buscar" ] ) ) {
             $buscar = $dataRequest[ "buscar" ];
-            $data[ "buscar" ] = $buscar;
+            $data[ "buscar" ] = $dataRequest[ "buscar" ];
+            $buscar = htmlentities( $dataRequest[ "buscar" ] );
             $data[ "elementos" ] = $this->model::where( "title" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
                 where( 'elim' , 0 )->orWhere( "metadata" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
                 orWhereHas('familia', function ($query) use ($buscar) {

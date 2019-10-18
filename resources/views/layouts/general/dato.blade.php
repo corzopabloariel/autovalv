@@ -14,7 +14,7 @@
         <div class="position-absolute w-100 h-100"></div>
         <div class="w-100 p-4">
             <form action="{{ route( 'buscar' ) }}" method="get">
-                <input type="search" name="buscar" placeholder="Buscar modelo o código de producto..." class="form-control text-white px-0 bg-transparent border-left-0 border-right-0 border-top-0"/>
+                <input type="search" @isset( $data['buscar'] ) value="{{ $data['buscar'] }}" @endisset name="buscar" placeholder="Buscar modelo o código de producto..." class="form-control text-white px-0 bg-transparent border-left-0 border-right-0 border-top-0"/>
             </form>
         </div>
     </div>

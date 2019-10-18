@@ -156,6 +156,12 @@ div.title {
     line-height: 18px;
     text-align: center;
 }
+.wrapper-productos .relacionados .title {
+    background: rgba( 32 , 32 , 32 , .07 );
+    color: var( --colorA );
+    font-weight: 600;
+    font-size: 15px;
+}
 .wrapper-productos .sidebar li {
     background-color: var( --colorA );
     color: var( --white );

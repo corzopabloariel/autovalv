@@ -46,7 +46,7 @@
             </div>
             <div class="col-12 col-md-9">
                 <div class="row normal mt-n4">
-                    @foreach( $data[ "productos" ] AS $p )
+                    @forelse( $data[ "productos" ] AS $p )
                         @php
                             $images = $p->images;
                             $img = "";
@@ -54,7 +54,7 @@
                                 $img = $images[ 0 ]->image[ 'i' ];
                         @endphp
                         <div class="col-12 col-md-6 col-lg-4 mt-4 producto wrapper-link">
-                            <a href="{{ URL::to( 'productos/' . str_slug( $data['familia']->title ) . '/' . str_slug( $p->title ) . '/' . $p->id ) }}">
+                            <a href="{{ URL::to( 'productos/' . str_slug( strip_tags( $data['familia']->title ) ) . '/' . str_slug( strip_tags( $p->title ) ) . '/' . $p->id ) }}">
                                 <div class="card">
                                     <img src="{{ asset( $img ) }}" alt="" class="card-img-top border-bottom-0">
                                     <div class="card-body">
@@ -63,7 +63,11 @@
                                 </div>
                             </a>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12 text-center">
+                            <h3 class="py-5">Sin resultados</h3>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>

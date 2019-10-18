@@ -40,11 +40,29 @@ class GeneralController extends Controller
     }
 
     public function buscar( Request $request ) {
+        $link = "search";
         $dataRequest = $request->all();
+        if( !isset( $dataRequest[ "buscar" ] ) )
+            return back();
+        
+        $buscar = htmlentities( $dataRequest[ "buscar" ] );
         $data = self::datos( "buscar" );
-        if( empty( $link ) )
-            $link = "home";
-        dd($dataRequest);
+        $data[ "buscar" ] = $dataRequest[ "buscar" ];
+        //dd($buscar);
+        $data[ "title" ] = isset( $data[ "empresa" ][ "secciones" ][ $link ] ) ? $data[ "empresa" ][ "secciones" ][ $link ] : $data[ "empresa" ][ "secciones" ][ "home" ];
+        $data[ "metadato" ] = isset( $data[ "empresa" ][ "metadatos" ][ $link ] ) ? $data[ "empresa" ][ "metadatos" ][ $link ] : $data[ "empresa" ][ "metadatos" ][ "home" ];
+        $data[ "sliders" ] = Slider::where( "section" , $link )->where( "elim" , 0 )->get();
+        $data[ "contenido" ] = Contenido::where( "section" , $link )->where( "elim" , 0 )->first();
+        $data[ "view" ] = "page.{$link}";
+        
+        $data[ "elementos" ] = Producto::where( "title" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
+            where( 'elim' , 0 )->orWhere( "metadata" , "LIKE" , "%{$buscar}%" )->where( 'elim' , 0 )->
+            orWhereHas('familia', function ($query) use ($buscar) {
+                $query->where('title', 'LIKE', "%{$buscar}%");
+            })->where( 'elim' , 0 )->
+            orderBy( 'order' )->paginate( 15 );
+
+        return view( 'layouts.main' ,compact( 'data' ) );
     }
 
     public function index( $link = null ) {
@@ -95,6 +113,7 @@ class GeneralController extends Controller
         $data[ "familia" ] = $data[ "producto" ]->familia;
         $data[ "productos" ] = $data[ "familia" ]->productos()->where( "elim", 0 )->orderBy("order")->paginate(15);
         $data[ "familias" ] = Familia::where( 'elim' , 0 )->orderBy( 'order' )->get();
+        $data[ "relacionados" ] = $data[ "familia" ]->productos()->orderByRaw('RAND()')->take( 3 )->get();
 
         $data[ "title" ] = isset( $data[ "empresa" ][ "secciones" ][ $link ] ) ? $data[ "empresa" ][ "secciones" ][ $link ] : $data[ "empresa" ][ "secciones" ][ "home" ];
         $data[ "metadato" ] = isset( $data[ "empresa" ][ "metadatos" ][ $link ] ) ? $data[ "empresa" ][ "metadatos" ][ $link ] : $data[ "empresa" ][ "metadatos" ][ "home" ];

@@ -94,6 +94,38 @@
                     </div>
                 </div>
                 @endif
+                <div class="row mt-5">
+                    <div class="col-12 relacionados">
+                        <h3 class="title px-3 py-2 font-lato">Productos Relacionados</h3>
+                        <div class="row">
+                            @forelse( $data[ "relacionados" ] AS $p )
+                                @if( $p->id == $data[ "producto" ]->id )
+                                    @continue
+                                @endif
+                                @php
+                                    $images = $p->images;
+                                    $img = "";
+                                    if( count( $images ) > 0)
+                                        $img = $images[ 0 ]->image[ 'i' ];
+                                @endphp
+                                <div class="col-12 col-md-6 col-lg-4 mt-3 producto wrapper-link">
+                                    <a href="{{ URL::to( 'productos/' . str_slug( strip_tags( $data['familia']->title ) ) . '/' . str_slug( strip_tags( $p->title ) ) . '/' . $p->id ) }}">
+                                        <div class="card">
+                                            <img src="{{ asset( $img ) }}" alt="" class="card-img-top border-bottom-0">
+                                            <div class="card-body">
+                                                {!! $p->title !!}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            @empty
+                                <div class="col-12 text-center">
+                                    <h3 class="py-5">Sin resultados</h3>
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
