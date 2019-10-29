@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg container-grid px-0">
+            <div class="col-12 col-lg container-grid pr-0">
                 <div class="cotizacion d-flex align-items-center" style="background-image: url({{ asset( 'images/general/cotizacion.jpg' ) }}); background-position: center center; background-repeat: no-repeat; background-size: cover;">
                     <div class="ml-5 pl-3 w-100">
                         <h3 class="title font-roboto">Cotización Online</h3>
@@ -66,20 +66,22 @@
     </div>
     <div class="iconos">
         <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <ul class="list-group py-4 list-group-horizontal d-flex justify-content-center icon border-0">
-                        @foreach( $data[ "contenido" ]->content[ 'icon' ] AS $c )
-                            <li class="list-group-item d-flex bg-transparent align-items-center flex-column px-4 border-0">
-                                @isset( $c[ 'icon' ][ 'i' ] )
-                                <img src="{{ asset( $c[ 'icon' ][ 'i' ] ) }}" alt="icon" class="mb-2" srcset="">
-                                @endisset
-                                <div class="mx-auto text-center">{!! $c[ 'text' ] !!}</div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="row py-5 justify-content-center icon">
+                @foreach( $data[ "contenido" ]->content[ 'icon' ] AS $c )
+                    <div class="col-4 col-md-3 col-xl-2 d-flex bg-transparent align-items-center flex-column">
+                        @isset( $c[ 'icon' ][ 'i' ] )
+                        <img src="{{ asset( $c[ 'icon' ][ 'i' ] ) }}" alt="icon" class="mb-2" srcset="">
+                        @endisset
+                        <div class="mx-auto text-center">{!! $c[ 'text' ] !!}</div>
+                    </div>
+                @endforeach
+                {{--<div class="col-12">
+                    <ul class="list-group py-4 list-group-horizontal d-flex justify-content-center  border-0">
+                    </ul>--}}
             </div>
         </div>
     </div>
+</div>
+<div class="wrapper-contacto">
+    {!! $data[ "empresa" ]->domicile[ "mapa" ] !!}
 </div>

@@ -27,15 +27,17 @@
         </div>
         <div class="row pb-5 mt-0 SinEspacio">
             <div class="col-12 text-justify contenido">
-                {!! $data[ "contenido" ]->content[ "text1" ] !!}
-                <div class="frase1 my-4 text-center font-roboto">
-                    {!! $data[ "contenido" ]->content[ "phrase1" ] !!}
-                </div>
-                {!! $data[ "contenido" ]->content[ "text2" ] !!}
-                <div class="frase2 text-center mx-auto px-3 my-4">
-                    {!! $data[ "contenido" ]->content[ "phrase2" ] !!}
-                </div>
-                <img src="{{ asset( $data[ 'contenido' ]->content[ 'image' ][ 'i' ] ) }}" onerror="this.src='{{ asset(`images/general/no-image-icon.png`) }}'" alt="La empresa" srcset="">
+                <img class="order--1 mb-3 w-100" src="{{ asset( $data[ 'contenido' ]->content[ 'image' ][ 'i' ] ) }}" onerror="this.src='{{ asset(`images/general/no-image-icon.png`) }}'" alt="La empresa" srcset="">
+                <div class="order--2">
+                    {!! $data[ "contenido" ]->content[ "text1" ] !!}
+                    <div class="frase1 my-4 text-center font-roboto">
+                        {!! $data[ "contenido" ]->content[ "phrase1" ] !!}
+                    </div>
+                    {!! $data[ "contenido" ]->content[ "text2" ] !!}
+                    <div class="frase2 text-center mx-auto px-3 my-4">
+                        {!! $data[ "contenido" ]->content[ "phrase2" ] !!}
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

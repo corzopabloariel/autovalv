@@ -1,6 +1,6 @@
 <footer>
     <div class="container pt-5">
-        <div class="row justify-content-start">
+        <div class="row justify-content-start mt-n2">
             <div class="col-12 col-md-4 col-lg-5 d-flex align-items-center">
                 <div class="">
                     <img class="logo align-self-center" src="{{ asset($data['empresa']['images']['logoFooter']['i']) }}" alt="" srcset="">
@@ -21,7 +21,7 @@
                     <li class="d-flex pt-1">
                         <i style="margin-right:10px;" class="icono fas fa-map-marker-alt"></i>
                         <div class="" style="margin-top: -5px; width: calc(100% - 37px)" >
-                            <p class="mb-0"><a href="{{ $data[ 'empresa' ]->domicile[ 'link' ] }}" target="blank">{{ $data[ 'empresa' ]->domicile["calle"] }} {{ $data[ 'empresa' ]->domicile["altura"] }} @if(!empty($data[ 'empresa' ]->domicile["cp"])) ({{ $data[ 'empresa' ]->domicile["cp"] }})@endif<br>{{ $data[ 'empresa' ]->domicile["provincia"] }}@if(!empty($data[ 'empresa' ]->domicile["localidad"])) - {{ $data[ 'empresa' ]->domicile["localidad"] }}@endif | {{ $data[ 'empresa' ]->domicile["pais"] }}</a></p>
+                            <p class="mb-0"><a href="{{ $data[ 'empresa' ]->domicile[ 'link' ] }}" target="blank">{{ $data[ 'empresa' ]->domicile["calle"] }} {{ $data[ 'empresa' ]->domicile["altura"] }} @if(!empty($data[ 'empresa' ]->domicile["cp"])) ({{ $data[ 'empresa' ]->domicile["cp"] }})@endif. {{ $data[ 'empresa' ]->domicile["provincia"] }}@if(!empty($data[ 'empresa' ]->domicile["localidad"])) - {{ $data[ 'empresa' ]->domicile["localidad"] }}@endif | {{ $data[ 'empresa' ]->domicile["pais"] }}</a></p>
                         </div>
                     </li>
                     <li class="d-flex mt-2">
@@ -39,36 +39,50 @@
                     <li class="d-flex pt-1">
                         <i style="margin-right:10px;" class="icono fas fa-phone-volume"></i>
                         <div class="" style="margin-top: -5px; width: calc(100% - 37px)">
+                            @php
+                            $print = "";
+                            @endphp
                             @foreach($A_tel AS $t)
                                 @php
                                 $visible = $t[ "telefono" ];
                                 $telefono = $t[ "telefono" ];
                                 if( !empty( $t[ "visible" ] ) )
                                     $visible = $t[ "visible" ];
+                                if( !empty( $print ) )
+                                    $print .= " | ";
+
+                                if( $t[ "is_link" ] )
+                                    $print .= "<a title='{$visible}' class='text-truncate' href='tel:{$telefono}'>{$visible}</a>";
+                                else
+                                    $print .= $visible;
                                 @endphp
-                                @if( $t[ "is_link" ] )
-                                    <a title="{{ $visible }}" class="text-truncate d-block" href="tel:{{ $telefono }}">{{ $visible }}</a>
-                                @else
-                                    {{ $visible }}
-                                @endif
                             @endforeach
+                            {!! $print !!}
                         </div>
                     </li>
                     @if(!empty($A_wha))
                     <li class="d-flex mt-2">
                         <i class="fab fa-whatsapp" style="color:#4DC95C; margin-right:10px;"></i>
                         <div class="" style="margin-top: -5px; width: calc(100% - 37px)">
+                            @php
+                            $print = "";
+                            @endphp
                             @foreach($A_wha AS $t)
-                                <a title="{{ $t['visible'] }}" class="whatsapp text-truncate d-block" target="blank" href="https://wa.me/{!!$t['telefono']!!}">{{ $t["visible"] }}</a>
+                                @php
+                                if( !empty( $print ) )
+                                    $print .= " | ";
+                                $print .= "<a title='{$t["visible"]}' class='whatsapp text-truncate d-block' target='blank' href='https://wa.me/{$t["telefono"]}'>{$t["visible"]}</a>";
+                                @endphp
                             @endforeach
+                            {!! $print !!}
                         </div>
                     </li>
                     @endif
                 </ul>
             </div>
         </div>
-        <div class="row mt-3 frase">
-            <div class="col-12"><div>{!! $data[ "empresa" ]->footer[ "text" ] !!}</div></div>
+        <div class="row mt-3">
+            <div class="col-12"><div class="frase">{!! $data[ "empresa" ]->footer[ "text" ] !!}</div></div>
         </div>
     </div>
 </footer>

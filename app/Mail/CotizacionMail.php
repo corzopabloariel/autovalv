@@ -37,6 +37,8 @@ class CotizacionMail extends Mailable
                 'mime' => $this->file->getClientMimeType(),
             ]);
         }
-        return $this->replyTo( $this->data[ "email" ], $this->data[ "nombre" ] )->subject( $title )->view('page.form.cotizacion')->with( $this->data );
+        return $this->replyTo( $this->data[ "email" ], $this->data[ "nombre" ] )
+                ->from( $this->data[ "email" ] , $this->data[ "nombre" ] )
+                ->subject( $title )->view('page.form.cotizacion')->with( $this->data );
     }
 }

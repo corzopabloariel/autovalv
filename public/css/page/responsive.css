@@ -1,6 +1,11 @@
 .show-tablet {
     display: none !important;
 }
+.list-group-item.active {
+    background-color: transparent;
+    border-color: #1955AC;
+    color: #1955AC;
+}
 @media ( max-width: 1200px ) and ( min-width: 992px ) {
     .buscador > div .title, .cotizacion > div .title {
         font-size: 30px;
@@ -22,6 +27,15 @@
     }
 }
 @media ( max-width: 768px ) {
+    .order--1 {
+        order: 1;
+    }
+    .order--2 {
+        order: 2;
+    }
+    .hidden-mobile .hidden-mobile {
+        display: none !important;
+    }
     header .navbar-brand img {
         height: 35px;
         width: auto;
@@ -31,9 +45,6 @@
     }
     header .links {
         display: none;
-    }
-    .row.SinEspacio > div {
-        padding: 0 !important;
     }
 
     .container-grid {
@@ -92,7 +103,7 @@
         margin-top: 1.5em;
     }
     footer .col-12 + .col-12 {
-        margin-top: 2.5em;
+        margin-top: 1.2em;
     }
     .container-grid {
         grid-template-areas: "cotizacion"
@@ -101,6 +112,11 @@
         grid-gap: 15px;
         grid-template-columns: auto;
         margin-top: 15px;
+    }
+
+    .wrapper-home .icon {
+        font-size: 12px;
+        line-height: 12px;
     }
 }
 @media (max-width: 992px) {

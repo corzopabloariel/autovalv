@@ -30,7 +30,10 @@ class ContactoMail extends Mailable
      */
     public function build()
     {
+        $name = "{$this->data[ "nombre" ]} {$this->data[ "apellido" ]}";
         $title = isset( $this->data[ "producto_id" ] ) ? "Consulta de producto" : "Formulario de Contacto";
-        return $this->replyTo( $this->data[ "email" ], $this->data[ "nombre" ] )->subject( $title )->view('page.form.contacto')->with( $this->data );
+        return $this->replyTo( $this->data[ "email" ], $name )
+                ->from( $this->data[ "email" ] , $name )
+                ->subject( $title )->view('page.form.contacto')->with( $this->data );
     }
 }

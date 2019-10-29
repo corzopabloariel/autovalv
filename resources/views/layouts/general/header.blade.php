@@ -10,22 +10,16 @@
             <div class="modal-body">
                 <ul class="list-group list-group-flush info">
                     <li class="list-group-item border-top-0 border-bottom-0 d-flex justify-content-center">
-                        <a href="{{ URL::to( '/' ) }}"><img style="max-width: 177px;" onError="this.src='{{ asset('images/general/no-img.png') }}'" src="{{ asset($data['empresa']->images['logo']['i']) }}?t=<?php echo time(); ?>" /></a>
+                        <a href="{{ URL::to( '/' ) }}"><img style="max-width: 263px; width: 100%" onError="this.src='{{ asset('images/general/no-img.png') }}'" src="{{ asset($data['empresa']->images['logo']['i']) }}?t=<?php echo time(); ?>" /></a>
                     </li>
                     <li class="list-group-item text-uppercase border-top-0 mt-4 @if(Request::is('/')) active @endif"><a href="{{ URL::to( '/' ) }}">Inicio</a></li>
                     <li class="list-group-item text-uppercase @if(Request::is('empresa*')) active @endif"><a href="{{ URL::to('empresa') }}">La Empresa</a></li>
                     <li class="list-group-item text-uppercase @if(Request::is('productos*')) active @endif"><a href="{{ URL::to('productos') }}">Productos</a></li>
-                    <li class="list-group-item text-uppercase @if(Request::is('documentacion*')) active @endif"><a href="{{ URL::to('documentacion') }}">Documentación</a></li>
+                    <li class="list-group-item text-uppercase d-none d-lg-block @if(Request::is('documentacion*')) active @endif"><a href="{{ URL::to('documentacion') }}">Documentación</a></li>
                     <li class="list-group-item text-uppercase @if(Request::is('cotizacion*')) active @endif"><a href="{{ URL::to('cotizacion') }}">Cotización Online</a></li>
                     <li class="list-group-item text-uppercase border-bottom-0 @if(Request::is('contacto*')) active @endif"><a href="{{ URL::to('contacto') }}">Contacto</a></li>
-                    
-                    <li class="list-group-item text-uppercase d-flex mt-4 border-top-0">
-                        <i class="fas fa-map-marker-alt mr-2"></i>
-                        <div class="" style="margin-top: -6px;">
-                            <p class="mb-0"><a href="{{ $data[ 'empresa' ]->domicile[ 'link' ] }}" target="blank">{{ $data[ 'empresa' ]->domicile["calle"] }} {{ $data[ 'empresa' ]->domicile["altura"] }} @if(!empty($data[ 'empresa' ]->domicile["cp"])) ({{ $data[ 'empresa' ]->domicile["cp"] }})@endif<br>{{ $data[ 'empresa' ]->domicile["provincia"] }}@if(!empty($data[ 'empresa' ]->domicile["localidad"])) - {{ $data[ 'empresa' ]->domicile["localidad"] }}@endif | {{ $data[ 'empresa' ]->domicile["pais"] }}</a></p>
-                        </div>
-                    </li>
                 </ul>
+                <img src="{{ asset($data['empresa']['images']['icon']['i']) }}" alt="" style="opacity: .7" class="ocsa mt-4 d-block mx-auto">
             </div>
         </div>
     </div>

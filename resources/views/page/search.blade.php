@@ -1,6 +1,6 @@
 <div class="wrapper-productos bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row py-4 SinEspacio">
+        <div class="row py-4 SinEspacio hidden-mobile">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
