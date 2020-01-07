@@ -12,7 +12,7 @@
             @include( 'layouts.general.dato' )
         </div>
         <div class="row py-5 mt-0 wrapper- SinEspacio">
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-3 d-none d-lg-block">
                 <div class="sidebar dont-collapse-sm" id="accordionMenu">
                     <ul class="list-group list-group-flush menu-lateral">
                     @foreach( $data[ "familias" ] AS $m )
@@ -44,7 +44,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-12 col-md-9">
+            <div class="col-12 col-md">
                 <div class="row normal mt-n4">
                     @forelse( $data[ "productos" ] AS $p )
                         @php
@@ -53,7 +53,7 @@
                             if( count( $images ) > 0)
                                 $img = $images[ 0 ]->image[ 'i' ];
                         @endphp
-                        <div class="col-12 col-md-6 col-lg-4 mt-4 producto wrapper-link">
+                        <div class="col-6 col-xs-6 col-md-4 col-lg-4 mt-4 producto wrapper-link">
                             <a href="{{ URL::to( 'productos/' . str_slug( strip_tags( $data['familia']->title ) ) . '/' . str_slug( strip_tags( $p->title ) ) . '/' . $p->id ) }}">
                                 <div class="card">
                                     <img src="{{ asset( $img ) }}" alt="" class="card-img-top border-bottom-0">

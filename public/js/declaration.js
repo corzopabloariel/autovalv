@@ -475,6 +475,16 @@ const ENTIDADES = {
             }
         }
     },
+    empresa_texto: {
+        ATRIBUTOS: {
+            whatsapp: {TIPO:"TP_STRING",VISIBILIDAD:"TP_VISIBLE",NOMBRE:"título de whatsapp",LABEL:1,CLASS:"border-left-0 border-rigth-0 border-top-0 rounded-0"}
+        },
+        FORM: [
+            {
+                '<div class="col-12">/whatsapp/</div>' : ['whatsapp']
+            }
+        ]
+    },
     empresa_images: {
         ATRIBUTOS: {
             logo: {TIPO:"TP_IMAGE",NECESARIO:1,VALID:"Logotipo OK",INVALID:"Logotipo - 334px X 69px",BROWSER:"",VISIBILIDAD:"TP_VISIBLE",ACCEPT:"image/*",NOMBRE:"imagen",WIDTH:"334px",CLASS:"bg-white"},

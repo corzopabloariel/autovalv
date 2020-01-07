@@ -34,7 +34,8 @@ class GeneralController extends Controller
             "metadato" => [
                 "description" => "",
                 "keywords" => ""
-            ]
+            ],
+            "familias" => Familia::where( 'elim' , 0 )->orderBy( 'order' )->get()
         ];
         if( !empty( $link ) ) {
             if( isset( $datos->metadata[ $link ] ) )
@@ -82,7 +83,7 @@ class GeneralController extends Controller
 
         switch( $link ) {
             case "home":
-                $data[ "productos" ] = Producto::where( "destacado" , 1 )->orderBy( "order" )->take( 4 )->get();
+                $data[ "productos" ] = Producto::where( "destacado" , 1 )->where( "elim" , 0 )->orderBy( "order" )->take( 4 )->get();
             break;
             case "productos":
                 $data[ "productos" ] = Familia::where( "elim" , 0 )->orderBy( "order" )->get();
@@ -100,7 +101,6 @@ class GeneralController extends Controller
         $link = "familia";
         $data[ "familia" ] = Familia::find( $id );
         $data[ "productos" ] = $data[ "familia" ]->productos()->where( "elim", 0 )->orderBy("order")->paginate(15);
-        $data[ "familias" ] = Familia::where( 'elim' , 0 )->orderBy( 'order' )->get();
 
         $data[ "title" ] = isset( $data[ "empresa" ][ "secciones" ][ $link ] ) ? $data[ "empresa" ][ "secciones" ][ $link ] : $data[ "empresa" ][ "secciones" ][ "home" ];
         $data[ "metadato" ] = isset( $data[ "empresa" ][ "metadatos" ][ $link ] ) ? $data[ "empresa" ][ "metadatos" ][ $link ] : $data[ "empresa" ][ "metadatos" ][ "home" ];
@@ -117,8 +117,7 @@ class GeneralController extends Controller
         $data[ "metadato" ][ "keywords" ] = $data[ "producto" ]->metadata;
         $data[ "familia" ] = $data[ "producto" ]->familia;
         $data[ "productos" ] = $data[ "familia" ]->productos()->where( "elim", 0 )->orderBy("order")->paginate(15);
-        $data[ "familias" ] = Familia::where( 'elim' , 0 )->orderBy( 'order' )->get();
-        $data[ "relacionados" ] = $data[ "familia" ]->productos()->orderByRaw('RAND()')->take( 3 )->get();
+        $data[ "relacionados" ] = $data[ "familia" ]->productos()->where( "elim" , 0 )->orderByRaw('RAND()')->take( 3 )->get();
 
         $data[ "title" ] = isset( $data[ "empresa" ][ "secciones" ][ $link ] ) ? $data[ "empresa" ][ "secciones" ][ $link ] : $data[ "empresa" ][ "secciones" ][ "home" ];
         $data[ "metadato" ] = isset( $data[ "empresa" ][ "metadatos" ][ $link ] ) ? $data[ "empresa" ][ "metadatos" ][ $link ] : $data[ "empresa" ][ "metadatos" ][ "home" ];

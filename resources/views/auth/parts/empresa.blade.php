@@ -27,6 +27,8 @@
     window.pyrusEmail = new Pyrus( "empresa_email" );
     window.pyrusHorario = new Pyrus( "empresa_horario" );
 
+    window.pyrusTexto = new Pyrus( "empresa_texto" );
+
     window.pyrusFooter = new Pyrus( "empresa_footer" );
     
     formSubmit = ( t ) => {
@@ -40,6 +42,7 @@
 
                 { DATA: window.pyrusDomicilio.objetoSimple, TIPO: "U", COLUMN: "domicile" },
                 { DATA: window.pyrusFooter.objetoSimple, TIPO: "U", COLUMN: "footer" },
+                { DATA: window.pyrusTexto.objetoSimple, TIPO: "U", COLUMN: "text" },
                 { DATA: window.pyrusHorario.objetoSimple, TIPO: "U", COLUMN: "schedule" },
                 { DATA: window.pyrusTelefono.objetoSimple, TIPO: "M", COLUMN: "phone" , TAG : "phone" , KEY : "phone" },
                 { DATA: window.pyrusEmail.objetoSimple, TIPO: "A", COLUMN: "email" }
@@ -113,6 +116,11 @@
             form += window.pyrusHorario.formulario();
         form += `</fieldset>`;
         
+        form += `<fieldset class="border p-3">`;
+            form += `<legend class="border-bottom">Textos</legend>`;
+            form += window.pyrusTexto.formulario();
+        form += `</fieldset>`;
+        
         form += '<div class="row justify-content-center pt-3">';
             form += '<div class="col-md-6 col-12">';
                 form += `<button id="btnTelefono" type="button" class="btn btn-block btn-dark text-center text-uppercase" onclick="addTelefono( this )">Teléfono<i class="fas fa-plus ml-2"></i></button>`;
@@ -146,7 +154,7 @@
         window.pyrusHorario.show( null , url_simple , window.data.elementos.schedule );
         window.pyrusDomicilio.show( null , url_simple , window.data.elementos.domicile );
         window.pyrusFooter.show( CKEDITOR , url_simple , window.data.elementos.footer );
-        //window.pyrusHorario.show( null , url_simple , window.data.elementos.horarios );
+        window.pyrusTexto.show( null , url_simple , window.data.elementos.text );
         window.data.elementos.email.forEach( function( e ) {
             addEmail( $( "#btnEmail" ) , e );
         });

@@ -1,6 +1,6 @@
 <div class="wrapper-contacto bg-white font-lato wrapper-">
     <div class="container">
-        <div class="row SinEspacio hidden-mobile">
+        <div class="row hidden-mobile">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -12,12 +12,12 @@
             @include( 'layouts.general.dato' )
         </div>
         
-        <div class="row SinEspacio">
+        <div class="row wrapper- mt-0 mb-5">
             <div class="col-12">
-                <div class="pb-4 wrapper-">
-                    <form action="{{ route( 'contacto' ) }}" method="post" class="form p-4">
+                <div style="background-color: #eeeeee; padding: 35px 30px 65px 30px">
+                    <form action="" id="formContacto" onsubmit="event.preventDefault(); enviar( this )" method="post">
                         @csrf
-                        <div class="p-4">
+                        <div class="p-3">
                             <div class="row normal">
                                 <div class="col-12 col-lg-8">
                                     @isset( $data[ "producto" ] )
@@ -142,3 +142,65 @@
     </div>
     {!! $data[ "empresa" ]->domicile[ "mapa" ] !!}
 </div>
+@push( "scripts" )
+<script src="https://www.google.com/recaptcha/api.js?render=6LdX4swUAAAAADN6YumdYUgZUOIL4fVM_9kxeh24"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+    Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    });
+    enviar = ( t ) => {
+        let url = t.action;
+        let method = t.method;
+        let idForm = t.id;
+        let formElement = document.getElementById( idForm );
+        let formData = new FormData( formElement );
+        grecaptcha.ready(function() {
+            $( ".form-control" ).prop( "readonly" , true );
+            Toast.fire({
+                icon: 'warning',
+                title: 'Espere, enviando'
+            });
+            grecaptcha.execute("6LdX4swUAAAAADN6YumdYUgZUOIL4fVM_9kxeh24", {action: 'contact'}).then( function( token ) {
+                formData.append( "token", token );
+                axios({
+                    method: method,
+                    url: url,
+                    data: formData,
+                    responseType: 'json',
+                    config: { headers: {'Content-Type': 'multipart/form-data' }}
+                })
+                .then((res) => {
+                    $( ".form-control" ).prop( "readonly" , false );
+                    if( parseInt( res.data.estado ) ) {
+                        $( ".form-control" ).val( "" );
+                        Toast.fire({
+                            icon: 'success',
+                            title: res.data.mssg
+                        });
+                    } else
+                        Toast.fire({
+                            icon: 'error',
+                            title: res.data.mssg
+                        });
+                })
+                .catch((err) => {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Ocurrió un error'
+                    });
+                })
+                .then(() => {});
+            });
+        });
+    };
+</script>
+@endpush

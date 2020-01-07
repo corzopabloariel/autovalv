@@ -12,7 +12,7 @@
             @include( 'layouts.general.dato' )
         </div>
         <div class="row py-5 mt-0 wrapper- SinEspacio">
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-3 d-none d-lg-block">
                 <div class="sidebar dont-collapse-sm" id="accordionMenu">
                     <ul class="list-group list-group-flush menu-lateral">
                     @foreach( $data[ "familias" ] AS $m )
@@ -74,8 +74,8 @@
                         </h3>
                         @foreach( $data[ "producto" ]->details AS $d )
                         <div class="row mb-0 mt-2">
-                            <div class="col-12 col-md-4 key">{{ $d[ "key" ] }}</div>
-                            <div class="col-12 col-md">{{ $d[ "value" ] }}</div>
+                            <div class="col-6 col-md-4 key">{{ $d[ "key" ] }}</div>
+                            <div class="col-6 col-md">{{ $d[ "value" ] }}</div>
                         </div>
                         @endforeach
                         <div class="mt-3">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 @endif
-                <div class="row mt-5">
+                <div class="row mt-5 d-none">
                     <div class="col-12 relacionados">
                         <h3 class="title px-3 py-2 font-lato">Productos Relacionados</h3>
                         <div class="row">

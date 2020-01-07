@@ -1,6 +1,6 @@
 <div class="wrapper-home bg-white wrapper-">
     <div class="container-fluid">
-        <div class="row SinEspacio">
+        <div class="row">
             <div class="col-12 col-lg-8 pl-0">
                 <div id="carouselExampleIndicators" class="carousel bg-white slide wrapper-slider" data-ride="carousel">
                     <ol class="carousel-indicators">
@@ -17,7 +17,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg container-grid pr-0">
+            <div class="col-12 col-lg pr-0 container-grid">
                 <div class="cotizacion d-flex align-items-center" style="background-image: url({{ asset( 'images/general/cotizacion.jpg' ) }}); background-position: center center; background-repeat: no-repeat; background-size: cover;">
                     <div class="ml-5 pl-3 w-100">
                         <h3 class="title font-roboto">Cotización Online</h3>
@@ -39,7 +39,7 @@
             </div>
         </div>
     </div>
-    <div class="container destacado py-5">
+    <div class="container destacado py-5 d-none d-lg-block">
         <h3 class="title text-center font-lato">
             <span>PRODUCTOS DESTACADOS</span>
         </h3>
@@ -82,6 +82,6 @@
         </div>
     </div>
 </div>
-<div class="wrapper-contacto">
+<div class="wrapper-contacto d-xl-none d-lg-none" style="border-top: 2px solid var( --color );">
     {!! $data[ "empresa" ]->domicile[ "mapa" ] !!}
 </div>

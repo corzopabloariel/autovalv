@@ -1,6 +1,6 @@
 <div class="wrapper-productos wrapper- bg-white font-lato">
     <div class="container">
-        <div class="row SinEspacio hidden-mobile">
+        <div class="row hidden-mobile">
             <div class="col-12 col-md d-flex align-items-stretch">
                 <div class="title text-uppercase position-relative font-lato w-100 d-flex align-items-center">
                     <div class="position-absolute w-100 h-100"></div>
@@ -11,7 +11,7 @@
             </div>
             @include( 'layouts.general.dato' )
         </div>
-        <div class="row py-5 mt-0 SinEspacio">
+        <div class="row mt-0" style="padding-top: 50px; padding-bottom: 115px;">
             @foreach( $data[ "productos" ] AS $p )
             <div class="col-12 col-md-3 mt-4 producto wrapper-link">
                 <a href="{{ URL::to( 'productos/' . str_slug( strip_tags( $p->title ) ) . '/' . $p->id ) }}">

@@ -26,7 +26,7 @@ class ProductoimageController extends Controller
             "producto_id" => $id,
             "breadcrumb" => $breadcrumb,
             "url" => $url,
-            "elementos"  => $producto->images
+            "elementos"  => $producto->images()->where( "elim" , 0 )->get()
         ];
         return view('auth.distribuidor',compact('data'));
     }

@@ -62,7 +62,11 @@
             </div>
         </div>
         @isset( $data[ "whatsapp" ] )
-        <a target="blank" href="https://wa.me/{{ $data[ 'whatsapp' ][ 'telefono' ] }}" class="whatsapp-flotante shadow rounded-circle position-fixed d-flex justify-content-center align-items-center text-white"><i class="fab fa-whatsapp"></i></a>
+        <a target="_blank" href="https://wa.me/{{ $data[ 'whatsapp' ][ 'telefono' ] }}">
+            <div class="position-fixed d-flex align-items-center rounded-pill pl-4 shadow" id="whatsapp">
+                {{ $data[ "empresa" ]->text[ "whatsapp" ] }} <span class="whatsapp-flotante rounded-circle d-flex justify-content-center align-items-center text-white ml-3"><i class="fab fa-whatsapp"></i></span>
+            </div>
+        </a>
         @endisset
         @include( 'layouts.general.message' )
         <div class="">

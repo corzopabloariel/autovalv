@@ -11,16 +11,41 @@ use App\Empresa;
 
 class FormController extends Controller
 {
+    public $secret = "6LdX4swUAAAAAKyOG6fCroMdAdkkL4ew8XWG7R2_";
     public function contacto( Request $request ) {
         $dataRequest = $request->all();
         unset( $dataRequest[ "_token" ] );
         $email = Empresa::first()->form[ "contacto" ];
-        Mail::to( $email )->send( new ContactoMail( $dataRequest ) );
+        $captcha = $dataRequest[ "token" ];
+        if(!$captcha){
+            return [ "estado" => 0 , "mssg" => "Captcha no verificado"];
+            exit;
+        }
+        $ip = $_SERVER['REMOTE_ADDR'];
         
-        if (count(Mail::failures()) > 0)
-            return back()->withErrors(['mssg' => "Ha ocurrido un error al enviar el formulario"]);
-        else
-            return back()->withSuccess(['mssg' => "Formulario enviado correctamente"]);
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array('secret' => $this->secret, 'response' => $captcha);
+        
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+        $responseKeys = json_decode($response,true);
+        if($responseKeys["success"]) {
+            Mail::to( $email )->send( new ContactoMail( $dataRequest ) );
+        
+            if( count( Mail::failures() ) > 0 )
+                return [ "estado" => 0 , "mssg" => "Ocurrió un error" ];
+            else
+                return [ "estado" => 1 , "mssg" => "Formulario enviado correctamente" ];
+        } else {
+            return [ "estado" => 0 , "mssg" => "Ocurrió un error" ];
+        }
     }
     
     public function cotizacion( Request $request ) {
@@ -28,12 +53,36 @@ class FormController extends Controller
         unset( $dataRequest[ "_token" ] );
         $email = Empresa::first()->form[ "cotizacion" ];
         $file = $request->file('file');
-
-        Mail::to( $email )->send( new CotizacionMail( $dataRequest , $file ) );
         
-        if (count(Mail::failures()) > 0)
-            return back()->withErrors(['mssg' => "Ha ocurrido un error al enviar el formulario"]);
-        else
-            return back()->withSuccess(['mssg' => "Formulario enviado correctamente"]);
+        $captcha = $dataRequest[ "token" ];
+        if(!$captcha){
+            return [ "estado" => 0 , "mssg" => "Captcha no verificado"];
+            exit;
+        }
+        $ip = $_SERVER['REMOTE_ADDR'];
+        
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $data = array('secret' => $this->secret, 'response' => $captcha);
+        
+        $options = [
+            'http' => [
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+        $context  = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+        $responseKeys = json_decode($response,true);
+        if($responseKeys["success"]) {
+            Mail::to( $email )->send( new CotizacionMail( $dataRequest , $file ) );
+        
+            if( count( Mail::failures() ) > 0 )
+                return [ "estado" => 0 , "mssg" => "Ocurrió un error" ];
+            else
+                return [ "estado" => 1 , "mssg" => "Cotización enviada correctamente" ];
+        } else {
+            return [ "estado" => 0 , "mssg" => "Ocurrió un error" ];
+        }
     }
 }

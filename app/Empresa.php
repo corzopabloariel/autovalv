@@ -19,7 +19,8 @@ class Empresa extends Model
         'form',
         'sections',
         'schedule',
-        'footer'
+        'footer',
+        'text'
     ];
     
     protected $casts = [
@@ -32,6 +33,7 @@ class Empresa extends Model
         'form' => 'array',
         'sections' => 'array',
         'schedule' => 'array',
-        'footer' => 'array'
+        'footer' => 'array',
+        'text' => 'array'
     ];
 }

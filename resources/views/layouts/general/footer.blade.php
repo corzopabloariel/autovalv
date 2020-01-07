@@ -82,7 +82,7 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col-12"><div class="frase">{!! $data[ "empresa" ]->footer[ "text" ] !!}</div></div>
+            <div class="col-12"><div class="frase text-center">{!! $data[ "empresa" ]->footer[ "text" ] !!}</div></div>
         </div>
     </div>
 </footer>
